@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2-family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- KaTeX for Mathematics -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -41,7 +41,7 @@
         <li><a href="#proposed-framework">Proposed Framework</a></li>
       </ul>
       <div class="nav-actions">
-        <button id="theme-toggle" class="btn-icon" title="Toggle Theme"><span id="theme-icon">??</span></button>
+        <button id="theme-toggle" class="btn-icon" title="Toggle Theme"><span id="theme-icon"></span></button>
         <a href="https://github.com/prathikshaa16/vision-transformers-medical-imaging" target="_blank" class="btn-github">GitHub</a>
       </div>
     </div>
@@ -61,7 +61,7 @@
         <div class="layer-card layer-1">
           <span class="layer-indicator layer-1-badge">Layer 1</span>
           <h4>Research Papers Foundation</h4>
-          <p>Systematic survey & structured extraction of 4 recent peer-reviewed studies (Springer & Elsevier, 2024?2025) spanning 3D MRI, Cardiac Cine, Edge IoMT, and Histopathology.</p>
+          <p>Systematic survey & structured extraction of 4 recent peer-reviewed studies (Springer & Elsevier, 2024-2025) spanning 3D MRI, Cardiac Cine, Edge IoMT, and Histopathology.</p>
         </div>
         <div class="layer-card layer-2">
           <span class="layer-indicator layer-2-badge">Layer 2</span>
@@ -91,7 +91,7 @@
         </div>
         <div class="rq-card">
           <span class="rq-tag">RQ2: Hybrids</span>
-          <h4>Can hybrid CNN?Transformer architectures effectively combine local and global features?</h4>
+          <h4>Can hybrid CNN-Transformer architectures effectively combine local and global features?</h4>
         </div>
         <div class="rq-card">
           <span class="rq-tag">RQ3: Efficiency</span>
@@ -114,17 +114,17 @@
     <div class="container">
       <div class="section-header">
         <span class="layer-indicator layer-1-badge">Background</span>
-        <h2>Theoretical Foundations: Why Transformers for Medical Imaging?</h2>
+        <h2>Theoretical Foundations: Why Transformers for Medical Imaging-</h2>
         <p>Understanding the transition from local convolutional kernels to global self-attention.</p>
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
         <div class="layer-card">
-          <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">What is Deep Learning?</h4>
+          <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">What is Deep Learning-</h4>
           <p>A subset of machine learning based on multi-layered artificial neural networks capable of automatically learning hierarchical representations directly from medical data without manual feature extraction.</p>
         </div>
         <div class="layer-card">
-          <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">What is Medical Image Analysis?</h4>
+          <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">What is Medical Image Analysis-</h4>
           <p>The automated computational analysis of biomedical imaging (X-rays, CT, MRI, Ultrasound, Histopathology) for lesion detection, organ segmentation, disease classification, and treatment planning.</p>
         </div>
         <div class="layer-card">
@@ -140,7 +140,7 @@
           <p>Originally designed for natural language processing (Vaswani et al., 2017), Transformers use self-attention to model relationships across all tokens in an image directly, capturing global context in early layers.</p>
         </div>
         <div class="layer-card">
-          <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">What is a Vision Transformer (ViT)?</h4>
+          <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">What is a Vision Transformer (ViT)-</h4>
           <p>A Vision Transformer treats an image as a sequence of non-overlapping patches, linearly projects them into token embeddings, and processes them through standard Transformer encoder blocks with self-attention.</p>
         </div>
       </div>
@@ -193,7 +193,7 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <div class="timeline-year">Generation 5</div>
-            <div class="timeline-title">Swin & Hybrid CNN?Transformer Models</div>
+            <div class="timeline-title">Swin & Hybrid CNN-Transformer Models</div>
             <div class="timeline-desc">Window-based shifted attention reduced computational cost while hybrid architectures combined CNN local feature extraction with Transformer global context.</div>
           </div>
         </div>
@@ -235,8 +235,8 @@
               <code>Input Image: X \in \mathbb{R}^{H \times W \times C}</code>
             </div>
             <div class="stage-controls">
-              <button id="btn-prev-step" class="btn-secondary" onclick="prevViTStep()">? Previous Stage</button>
-              <button id="btn-next-step" class="btn-primary" onclick="nextViTStep()">Next Stage ?</button>
+              <button id="btn-prev-step" class="btn-secondary" onclick="prevViTStep()">- Previous Stage</button>
+              <button id="btn-next-step" class="btn-primary" onclick="nextViTStep()">Next Stage -</button>
             </div>
           </div>
         </div>
@@ -322,7 +322,7 @@
               <th>Feature</th>
               <th>CNN</th>
               <th>Vision Transformer</th>
-              <th>Hybrid CNN?Transformer</th>
+              <th>Hybrid CNN-Transformer</th>
             </tr>
           </thead>
           <tbody>
@@ -394,7 +394,7 @@
           <h4 style="color: var(--accent-emerald); margin-bottom: 0.75rem;">Paper Selection Process</h4>
           <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
             1. <strong>Literature Search</strong>: Targeted search across IEEE, Springer, Elsevier, and ACM digital libraries.<br>
-            2. <strong>Screening Filter</strong>: Filtered for 2024?2026 peer-reviewed journal and conference publications.<br>
+            2. <strong>Screening Filter</strong>: Filtered for 2024-2026 peer-reviewed journal and conference publications.<br>
             3. <strong>Thematic Focus</strong>: Shortlisted studies focusing specifically on medical image analysis using Vision Transformers.<br>
             4. <strong>Four Paradigms Selected</strong>: Chose four complementary papers representing: (1) CNN vs 3D Transformer, (2) Hybrid CNN + Swin, (3) Lightweight Transformer for IoMT, and (4) Explainable Transformer.<br>
             5. <strong>Structured Extraction</strong>: Extracted 10 systematic fields per paper for objective comparison.
@@ -407,7 +407,7 @@
             <strong style="color: var(--accent-emerald);">Inclusion Criteria:</strong>
             <ul style="padding-left: 1.25rem; margin-bottom: 0.75rem;">
               <li>Peer-reviewed publications from reputable publishers (Springer, Elsevier, IEEE).</li>
-              <li>Recent publication window: 2024?2026.</li>
+              <li>Recent publication window: 2024-2026.</li>
               <li>Medical imaging focus with Vision Transformer or hybrid architectures.</li>
               <li>Reports empirical, quantitative experimental results.</li>
             </ul>
@@ -429,7 +429,7 @@
       <div class="section-header">
         <span class="layer-indicator layer-2-badge">Literature Review</span>
         <h2>The Four Benchmark Research Papers</h2>
-        <p>A structured comparative study of four distinct deep learning paradigms (2024?2025).</p>
+        <p>A structured comparative study of four distinct deep learning paradigms (2024-2025).</p>
       </div>
 
       <div style="display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
@@ -449,7 +449,7 @@
             <div>
               <div class="paper-meta">
                 <span class="badge badge-cyan">Springer (2024)</span>
-                <span>BMC Medical Informatics</span>
+                <span>BMC Neurology</span>
                 <span>DOI: 10.1186/s12883-024-04010-6</span>
               </div>
               <h3 class="paper-title">Automatic Segmentation of White Matter Lesions on Multi-Parametric MRI: CNN versus Vision Transformer</h3>
@@ -950,7 +950,7 @@
           <div style="text-align: center; font-family: monospace; font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold;">
             MEDICAL IMAGE
           </div>
-          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">?<br>?<br>Preprocessing & Normalization<br>?</div>
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">&darr;<br>&darr;<br>Preprocessing &amp; Normalization<br>&darr;</div>
 
           <div class="stream-row">
             <div class="stream-box cnn-stream">
@@ -968,7 +968,7 @@
             </div>
           </div>
 
-          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">?<br>?<br>Feature Fusion Layer<br>?<br>?<br>Lightweight Classification Head<br>?<br>?<br>Disease Prediction<br>?</div>
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">&darr;<br>&darr;<br>Feature Fusion Layer<br>&darr;<br>&darr;<br>Lightweight Classification Head<br>&darr;<br>&darr;<br>Disease Prediction<br>&darr;</div>
 
           <div class="dual-output-row">
             <div class="output-box">
@@ -988,7 +988,7 @@
             </div>
           </div>
 
-          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">?<br>?<br><span style="color: var(--accent-emerald); font-weight: bold;">Human-Readable Clinical Explanation</span></div>
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">&darr;<br>&darr;<br><span style="color: var(--accent-emerald); font-weight: bold;">Human-Readable Clinical Explanation</span></div>
         </div>
 
         <!-- Synthesis Table: Why This Framework? -->
@@ -1109,14 +1109,14 @@
             <div class="member-avatar">M1</div>
             <div>
               <h4 style="font-size: 1.15rem;">Member 1: Fundamentals & Papers 1 & 2</h4>
-              <span style="font-size: 0.8rem; color: var(--accent-cyan); font-family: monospace;">Slides 1 ? 10</span>
+              <span style="font-size: 0.8rem; color: var(--accent-cyan); font-family: monospace;">Slides 1 - 10</span>
             </div>
           </div>
           <ul>
-            <li><strong>Slide 1?2:</strong> Project Title, Motivation, and Research Questions.</li>
+            <li><strong>Slide 1-2:</strong> Project Title, Motivation, and Research Questions.</li>
             <li><strong>Slide 3:</strong> Background: Medical Image Analysis & CNN Limitations.</li>
             <li><strong>Slide 4:</strong> Evolution Timeline: Traditional ML $\rightarrow$ Hybrids.</li>
-            <li><strong>Slide 5?6:</strong> Vision Transformer Mechanics (7-Stage Walkthrough).</li>
+            <li><strong>Slide 5-6:</strong> Vision Transformer Mechanics (7-Stage Walkthrough).</li>
             <li><strong>Slide 7:</strong> Self-Attention Mechanics (Q, K, V & Equation).</li>
             <li><strong>Slide 8:</strong> CNN vs. ViT Architectural Comparison.</li>
             <li><strong>Slide 9:</strong> Paper 1: 3D CNN vs 3D Swin on Brain MRI (Springer '24).</li>
@@ -1129,7 +1129,7 @@
             <div class="member-avatar" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);">M2</div>
             <div>
               <h4 style="font-size: 1.15rem;">Member 2: Papers 3 & 4, Benchmark & Proposed Framework</h4>
-              <span style="font-size: 0.8rem; color: var(--accent-emerald); font-family: monospace;">Slides 11 ? 20</span>
+              <span style="font-size: 0.8rem; color: var(--accent-emerald); font-family: monospace;">Slides 11 - 20</span>
             </div>
           </div>
           <ul>
@@ -1139,7 +1139,7 @@
             <li><strong>Slide 14:</strong> Master Comparative Analysis (Architectures & Datasets).</li>
             <li><strong>Slide 15:</strong> Task-Specific Performance & Computational Complexity.</li>
             <li><strong>Slide 16:</strong> Five Key Research Gaps Identified from Literature.</li>
-            <li><strong>Slide 17?18:</strong> Proposed Future Framework: E2H-ViT Architecture & Rationale.</li>
+            <li><strong>Slide 17-18:</strong> Proposed Future Framework: E2H-ViT Architecture & Rationale.</li>
             <li><strong>Slide 19:</strong> Future Research Horizons (Multimodal, Federated, Foundation).</li>
             <li><strong>Slide 20:</strong> Conclusion, Summary Takeaways & Q&A Defense.</li>
           </ul>
@@ -1158,7 +1158,7 @@
 
       <div class="layer-card" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
         <ol style="padding-left: 1.5rem;">
-          <li><strong>Paper 1:</strong> Automatic segmentation of white matter lesions on multi-parametric MRI: convolutional neural network versus vision transformer. <em>BMC Medical Informatics and Decision Making</em>, Springer, 2024. DOI: 10.1186/s12883-024-04010-6.</li>
+          <li><strong>Paper 1:</strong> Automatic segmentation of white matter lesions on multi-parametric MRI: convolutional neural network versus vision transformer. <em>BMC Neurology</em>, Springer, 2024. DOI: 10.1186/s12883-024-04010-6.</li>
           <li><strong>Paper 2:</strong> PSVT: Pyramid Shifted Window based Vision Transformer for cardiac image segmentation. <em>Biomedical Signal Processing and Control</em>, Elsevier, Vol. 102, 107397, 2025. DOI: 10.1016/j.bspc.2024.107397.</li>
           <li><strong>Paper 3:</strong> A lightweight vision transformer with weighted global average pooling: implications for IoMT applications (LightAMViT). <em>Complex & Intelligent Systems</em>, Springer, March 2025. DOI: 10.1007/s40747-025-01842-8.</li>
           <li><strong>Paper 4:</strong> Enhancing histopathological image analysis: An explainable vision transformer approach with comprehensive interpretation methods and evaluation of explanation quality (XViT). <em>Engineering Applications of Artificial Intelligence</em>, Elsevier, Vol. 139, 109520, 2025. DOI: 10.1016/j.engappai.2025.109520.</li>
