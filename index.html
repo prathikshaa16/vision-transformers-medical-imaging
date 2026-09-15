@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recent Advances in Vision Transformers for Medical Image Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="#top" class="brand">
+        <div class="brand-icon">ViT</div>
+        <span>MedViT Research</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#evolution">Evolution</a></li>
+        <li><a href="#vit-proper">ViT Architecture</a></li>
+        <li><a href="#self-attention">Self-Attention</a></li>
+        <li><a href="#cnn-vs-vit">CNN vs ViT</a></li>
+        <li><a href="#papers">4 Papers</a></li>
+        <li><a href="#comparative-analysis">Comparative</a></li>
+        <li><a href="#research-gaps">Gaps</a></li>
+        <li><a href="#proposed-framework">E2H-ViT</a></li>
+        <li><a href="#methodology">Team & Method</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-icon" title="Toggle Theme"><span id="theme-icon">??</span></button>
+        <a href="https://github.com/prathikshaa16/vision-transformers-medical-imaging" target="_blank" class="btn-github">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+    <div class="container">
+      <div class="hero-tag">Peer-Reviewed Literature Synthesis & Mini Research Study</div>
+      <h1>Recent Advances in Vision Transformers for Medical Image Analysis</h1>
+      <p class="hero-subtitle">
+        A Comparative Study of Deep Learning Approaches: From Local CNN Convolutions to Shifted-Window Attention, Efficient Edge Transformers, and Explainable Clinical Frameworks.
+      </p>
+      <div class="three-layers-banner">
+        <div class="layer-card layer-1">
+          <span class="layer-indicator layer-1-badge">Layer 1</span>
+          <h4>Research Papers Foundation</h4>
+          <p>Systematic survey & 12-factor extraction of 4 peer-reviewed Springer & Elsevier studies (2024?2025) spanning 3D MRI, Cardiac Cine, IoMT, and Histopathology.</p>
+        </div>
+        <div class="layer-card layer-2">
+          <span class="layer-indicator layer-2-badge">Layer 2</span>
+          <h4>Comparative Benchmark</h4>
+          <p>Quantitative analysis across architectures, parameters, computational FLOPs, clinical tasks, metrics, complexity bounds, and 8 critical research gaps.</p>
+        </div>
+        <div class="layer-card layer-3">
+          <span class="layer-indicator layer-3-badge">Layer 3</span>
+          <h4>Proposed Future Framework</h4>
+          <p><strong>E2H-ViT</strong>: An Efficient Explainable Hybrid CNN?Swin Transformer architecture featuring dual-lens Grad-CAM + Attention Rollout and doctor-readable reporting.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Research Questions Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Formal Research Questions (RQs)</h2>
+        <p>Structuring our mini-study around five core clinical and computational hypotheses.</p>
+      </div>
+      <div class="rq-grid">
+        <div class="rq-card">
+          <span class="rq-tag">RQ1: Inductive Bias</span>
+          <h4>How do Vision Transformers structurally differ from conventional CNNs in modeling pathological patterns?</h4>
+        </div>
+        <div class="rq-card">
+          <span class="rq-tag">RQ2: Architectural Synergy</span>
+          <h4>Can CNN?Transformer hybrid architectures outperform pure ViTs by unifying local fine texture with global spatial context?</h4>
+        </div>
+        <div class="rq-card">
+          <span class="rq-tag">RQ3: Computational Feasibility</span>
+          <h4>Which architectural modifications (e.g. Swin shifted windows, WGAP) overcome quadratic $O(N^2)$ complexity for IoMT edge deployment?</h4>
+        </div>
+        <div class="rq-card">
+          <span class="rq-tag">RQ4: Clinical Explainability</span>
+          <h4>How do attention rollout and layer-wise relevance propagation provide verifiable interpretability to clinicians?</h4>
+        </div>
+        <div class="rq-card">
+          <span class="rq-tag">RQ5: Deployment Roadblocks</span>
+          <h4>What open challenges (domain shift, class imbalance, 3D volume memory) still prevent widespread hospital deployment?</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section id="introduction" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-1-badge">Part A</span>
+        <h2>Introduction: The Paradigm Shift in Medical AI</h2>
+        <p>Why modern medicine is transitioning from convolutional filters to self-attention mechanisms.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <div class="layer-card">
+          <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">1. What is Deep Learning?</h4>
+          <p>Deep Learning is a subset of machine learning based on multi-layered artificial neural networks capable of automatically discovering hierarchical representations from raw clinical data without manual feature engineering.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">2. What is Medical Image Analysis?</h4>
+          <p>The automated computational interrogation of biomedical imaging modalities (X-rays, CT scans, MRIs, Ultrasound, Histopathology slides) to detect lesions, segment anatomical organs, classify diseases, and guide personalized therapeutics.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-emerald); margin-bottom: 0.5rem;">3. Why CNNs Became Popular</h4>
+          <p>Convolutional Neural Networks (CNNs) dominated from 2012 due to strong <em>inductive biases</em>: local receptive fields, translation equivariance, and weight sharing, mimicking the human visual cortex for edge and texture detection.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-rose); margin-bottom: 0.5rem;">4. Problems with Conventional CNNs</h4>
+          <p>CNN kernels only process small local neighborhoods ($3 \times 3$ or $5 \times 5$). Capturing long-range relationships (e.g. comparing bilateral lungs or distant brain lesions) requires stacking deep layers, causing receptive field saturation and loss of contextual geometry.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-purple); margin-bottom: 0.5rem;">5. Why Transformers Became Interesting</h4>
+          <p>Originating in NLP (Vaswani et al., 2017), Transformers rely solely on <em>Self-Attention</em> to model all-to-all interactions across input tokens in a single operation, eliminating sequential or distance bottlenecks.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">6. Why ViTs in Medical Imaging?</h4>
+          <p>Medical diagnoses rarely rely on isolated pixels; a radiologist determines malignancy by analyzing lesion boundaries relative to surrounding parenchymal anatomy. ViTs capture these global spatial relationships naturally.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Evolution Timeline -->
+  <section id="evolution" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-1-badge">Part B</span>
+        <h2>The Architectural Evolution</h2>
+        <p>Understanding why each generation emerged to solve the fundamental bottlenecks of its predecessor.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">1990s ? 2011</div>
+            <div class="timeline-title">Traditional Image Processing</div>
+            <div class="timeline-desc">Handcrafted descriptors (SIFT, SURF, HOG, Haar wavelets) with SVMs. Highly fragile, required manual tuning per hospital scanner, failed on variable disease morphologies.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2012 ? 2015</div>
+            <div class="timeline-title">Early CNNs (AlexNet, VGG)</div>
+            <div class="timeline-desc">Automated hierarchical feature learning from raw pixels. Demonstrated superhuman classification on benchmark datasets, but suffered from vanishing gradients when depth exceeded 20 layers.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2015 ? 2019</div>
+            <div class="timeline-title">Residual & Dense Networks (ResNet, U-Net)</div>
+            <div class="timeline-desc">Skip connections and encoder-decoder U-Nets enabled training 100+ layer deep networks. Became the gold standard for clinical segmentation, yet struggled with long-range multi-organ dependencies.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2020 ? 2022</div>
+            <div class="timeline-title">Vision Transformers (ViT, DeiT)</div>
+            <div class="timeline-desc">Dosovitskiy et al. adapted pure self-attention to images by dividing scans into $16 \times 16$ patches. Achieved state-of-the-art global modeling but required massive pretraining data (JFT-300M / ImageNet-21k).</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2022 ? 2025</div>
+            <div class="timeline-title">Swin & Hybrid CNN-ViT Architectures</div>
+            <div class="timeline-desc">Shifted-window self-attention reduced quadratic complexity to linear $O(M^2 N d)$. Hybrid models (TransUNet, PSVT) fused CNN local stems with Transformer backbones for both fine edges and global context.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2025 ? Present</div>
+            <div class="timeline-title">Medical Foundation & Explainable Models</div>
+            <div class="timeline-desc">Billion-parameter self-supervised multimodal foundation models (BiomedCLIP, Rad-DINO) combined with layer-wise explainability engines (XViT) and IoMT edge-quantized lightweight ViTs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ViT 7-Step Interactive Simulator -->
+  <section id="vit-proper" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-1-badge">Part C</span>
+        <h2>Vision Transformer Mechanics: 7-Stage Interactive Pipeline</h2>
+        <p>Step through each mathematical transformation from raw medical DICOM pixels to diagnostic output.</p>
+      </div>
+
+      <div class="vit-simulator-container">
+        <div id="vit-step-indicator" class="step-indicator-bar">
+          <!-- Dynamically populated by vit-simulator.js -->
+        </div>
+
+        <div class="simulator-stage">
+          <div class="stage-visual" id="vit-step-visual">
+            <!-- Dynamically populated by vit-simulator.js -->
+          </div>
+
+          <div class="stage-info">
+            <h3 id="vit-step-heading">Step 1: Raw High-Resolution Clinical Image</h3>
+            <p id="vit-step-desc">Loading pipeline data...</p>
+            <div class="formula-box" id="vit-step-formula">
+              <code>Input Image: X \in \mathbb{R}^{H \times W \times C}</code>
+            </div>
+            <div class="stage-controls">
+              <button id="btn-prev-step" class="btn-secondary" onclick="prevViTStep()">? Previous Stage</button>
+              <button id="btn-next-step" class="btn-primary" onclick="nextViTStep()">Next Stage ?</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Self-Attention Mechanism -->
+  <section id="self-attention" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-1-badge">Part D</span>
+        <h2>The Mathematical Engine: Scaled Dot-Product Self-Attention</h2>
+        <p>How an image patch dynamically queries all other anatomical patches to construct global context.</p>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="display: inline-block; background: var(--bg-card); border: 1px solid var(--border-glow); padding: 1.5rem 2.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+          <div style="font-size: 1.35rem; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan);">
+            $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.75rem;">
+            Where $Q$ (Query), $K$ (Key), and $V$ (Value) are linear projections of patch tokens, and $d_k$ is the scaling factor preventing gradient vanishing.
+          </p>
+        </div>
+      </div>
+
+      <div class="attention-toy-grid">
+        <div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">The Q, K, V Medical Analogy</h3>
+          <div class="qkv-card q">
+            <h4 style="color: var(--accent-blue);">Query ($Q$)</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>"What am I looking for?"</strong> ? A patch containing an opacity asks: <em>"Are there similar opacities or contralateral lung markings elsewhere?"</em>
+            </p>
+          </div>
+          <div class="qkv-card k">
+            <h4 style="color: var(--accent-cyan);">Key ($K$)</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>"What anatomical features do I offer?"</strong> ? Every patch advertises its content: ribs, heart silhouette, apex, or vascular markings.
+            </p>
+          </div>
+          <div class="qkv-card v">
+            <h4 style="color: var(--accent-emerald);">Value ($V$)</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>"What is my actual feature content?"</strong> ? The informative diagnostic representation weighted and routed to the query token.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Interactive Patch-to-Patch Attention Map</h3>
+          <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Click on any query patch below to observe how self-attention routes weights to other regions:
+          </p>
+          <div id="selected-query-label" style="font-size: 0.85rem; font-weight: bold; color: var(--accent-cyan); margin-bottom: 0.5rem;">
+            Query Token: Patch 6 (Pathological Infiltrate)
+          </div>
+          <div id="interactive-attention-grid" class="patch-grid" style="grid-template-columns: repeat(4, 62px); grid-template-rows: repeat(4, 62px); margin: 0 auto;">
+            <!-- Rendered by vit-simulator.js -->
+          </div>
+          <div style="margin-top: 1rem; font-size: 0.775rem; font-family: monospace; color: var(--text-muted); text-align: center;" id="attention-math-calc">
+            Softmax(Q_6 K^T / ?d_k) ? High attention routing to P6 (28%), P7 (22%), P10 (18%)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CNN vs ViT Section -->
+  <section id="cnn-vs-vit" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-1-badge">Part E</span>
+        <h2>CNN vs. Vision Transformer Architectural Breakdown</h2>
+        <p>Comparing foundational properties and introducing the Hybrid CNN-ViT synergy.</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>Convolutional Neural Network (CNN)</th>
+              <th>Vision Transformer (ViT)</th>
+              <th>Hybrid CNN?Transformer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Basic Operation</strong></td>
+              <td>Localized 2D/3D Convolution kernels</td>
+              <td>Multi-Head Scaled Dot-Product Self-Attention</td>
+              <td>Convolutional Stem + Shifted Window Attention</td>
+            </tr>
+            <tr>
+              <td><strong>Feature Focus</strong></td>
+              <td>Local textures, sharp edges, cellular contours</td>
+              <td>Global long-range anatomical dependencies</td>
+              <td>Dual-stream: Local edge boundaries + Global context</td>
+            </tr>
+            <tr>
+              <td><strong>Receptive Field</strong></td>
+              <td>Restricted, grows linearly with depth $O(L)$</td>
+              <td>Instant global receptive field from layer 1</td>
+              <td>Multi-scale pyramidal receptive fields</td>
+            </tr>
+            <tr>
+              <td><strong>Inductive Bias</strong></td>
+              <td>Strong (spatial locality, translation invariance)</td>
+              <td>Weak (learns geometric topology from scratch)</td>
+              <td>Balanced (combines inductive bias with flexibility)</td>
+            </tr>
+            <tr>
+              <td><strong>Data Requirement</strong></td>
+              <td>Moderate (trainable on smaller cohorts)</td>
+              <td>High (requires large pretraining corpora)</td>
+              <td>Moderate-to-Low (accelerated convergence)</td>
+            </tr>
+            <tr>
+              <td><strong>Computational Cost</strong></td>
+              <td>$O(K^2 \cdot H \cdot W \cdot C_{in} C_{out})$ (Linear in pixels)</td>
+              <td>$O(N^2 d)$ (Quadratic in token sequence length)</td>
+              <td>$O(M^2 N d)$ (Linear with windowing + downsampled tokens)</td>
+            </tr>
+            <tr>
+              <td><strong>Interpretability</strong></td>
+              <td>Grad-CAM focuses on local gradient hotspots</td>
+              <td>Attention Rollout visualizes cross-token routing</td>
+              <td>Dual-Lens: High-res edge gradients + Global attention maps</td>
+            </tr>
+            <tr>
+              <td><strong>Clinical Status</strong></td>
+              <td>FDA/CE approved benchmark (nnU-Net)</td>
+              <td>Rapidly expanding in research & trials</td>
+              <td>Leading state-of-the-art across multimodal benchmarks</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- The 4 Benchmark Papers -->
+  <section id="papers" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-2-badge">Layer 2</span>
+        <h2>Systematic Extraction: 4 Peer-Reviewed Benchmark Studies</h2>
+        <p>Rigorous 12-factor extraction of recent high-impact papers from Springer and Elsevier (2024?2025).</p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+        <button class="btn-secondary paper-filter-btn active" data-filter="all" onclick="filterPapers('all')">All 4 Papers</button>
+        <button class="btn-secondary paper-filter-btn" data-filter="cnn-vs-swin" onclick="filterPapers('cnn-vs-swin')">Paper 1: 3D CNN vs 3D Swin</button>
+        <button class="btn-secondary paper-filter-btn" data-filter="hybrid" onclick="filterPapers('hybrid')">Paper 2: PSVT Hybrid</button>
+        <button class="btn-secondary paper-filter-btn" data-filter="lightweight" onclick="filterPapers('lightweight')">Paper 3: IoMT Lightweight</button>
+        <button class="btn-secondary paper-filter-btn" data-filter="explainable" onclick="filterPapers('explainable')">Paper 4: XViT Explainable</button>
+      </div>
+
+      <div class="papers-container">
+
+        <!-- Paper 1 -->
+        <article class="paper-card" data-category="cnn-vs-swin">
+          <div class="paper-header">
+            <div>
+              <div class="paper-meta">
+                <span class="badge badge-cyan">Springer Nature</span>
+                <span>BMC Medical Informatics (2024)</span>
+                <span>DOI: 10.1186/s12883-024-04010-6</span>
+              </div>
+              <h3 class="paper-title">Automatic Segmentation of White Matter Lesions on Multi-Parametric MRI: Convolutional Neural Network versus Vision Transformer</h3>
+            </div>
+            <span class="badge badge-purple">CNN vs. 3D Swin</span>
+          </div>
+          <div class="paper-body">
+            <div class="paper-grid">
+              <div class="paper-field">
+                <div class="field-label">1. Research Problem</div>
+                <div class="field-value">Benchmarking whether 3D Swin Transformers (Swin UNETR) genuinely outperform state-of-the-art 3D CNNs (nnU-Net) on volumetric multi-parametric brain MRI lesion segmentation.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">2. Proposed Model</div>
+                <div class="field-value">3D Swin UNETR (hierarchical shifted window encoder with CNN decoders) directly compared against 3D full-resolution nnU-Net.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">3. Dataset & Modality</div>
+                <div class="field-value">Multi-parametric Brain MRI: T1-weighted + T2-FLAIR sequences from multi-center clinical stroke & cerebrovascular cohort.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">4. Cohort Scale</div>
+                <div class="field-value">120 volumetric patient examinations, 3D volumetric multi-slice data, 2 classes (White Matter Lesion vs. Normal Tissue).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">5. Preprocessing</div>
+                <div class="field-value">Skull-stripping (BET), rigid co-registration to FLAIR space, N4 bias field correction, z-score intensity normalization, $96 \times 96 \times 96$ patch cropping.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">6. Architecture Flow</div>
+                <div class="field-value">Volumetric patch partition $\rightarrow$ 4-stage Swin Transformer encoder $\rightarrow$ residual skip connections $\rightarrow$ CNN deconvolutional decoding blocks.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">7. Training Protocol</div>
+                <div class="field-value">AdamW (lr=1e-4 with cosine decay), batch size = 2 per GPU, 300 epochs, Compound Loss: $\mathcal{L}_{\text{Dice}} + \mathcal{L}_{\text{CE}}$.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">8. Evaluation Metrics</div>
+                <div class="field-value">Dice Similarity Coefficient (DSC), Lesion-wise F1-score, Lesion-wise Sensitivity (Recall), Hausdorff Distance (HD95).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">10. Advantages</div>
+                <div class="field-value">Swin UNETR excels in bilateral spatial symmetry and minimizes false positives in distant normal white matter.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">11. Limitations</div>
+                <div class="field-value">High GPU VRAM consumption; 3D CNNs retained slight edge on very small punctate lesions (<5 voxels).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">12. Future Work</div>
+                <div class="field-value">Integration of multi-scale window sizes and boundary-aware loss functions for small focal lesions.</div>
+              </div>
+            </div>
+            <div class="paper-results-bar">
+              <div class="result-stat"><span class="stat-label">Swin UNETR Dice</span><span class="stat-number">81.2%</span></div>
+              <div class="result-stat"><span class="stat-label">nnU-Net Baseline Dice</span><span class="stat-number">82.4%</span></div>
+              <div class="result-stat"><span class="stat-label">Lesion F1-Score</span><span class="stat-number">77.4%</span></div>
+              <div class="result-stat"><span class="stat-label">Sensitivity</span><span class="stat-number">79.8%</span></div>
+              <div class="result-stat"><span class="stat-label">HD95 Distance</span><span class="stat-number">7.12 mm</span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Paper 2 -->
+        <article class="paper-card" data-category="hybrid">
+          <div class="paper-header">
+            <div>
+              <div class="paper-meta">
+                <span class="badge badge-emerald">Elsevier</span>
+                <span>Biomedical Signal Processing & Control (2025)</span>
+                <span>Vol. 102, 107397</span>
+              </div>
+              <h3 class="paper-title">PSVT: Pyramid Shifted Window Based Vision Transformer for Cardiac Image Segmentation</h3>
+            </div>
+            <span class="badge badge-cyan">CNN + Swin Hybrid</span>
+          </div>
+          <div class="paper-body">
+            <div class="paper-grid">
+              <div class="paper-field">
+                <div class="field-label">1. Research Problem</div>
+                <div class="field-value">Segmenting complex, deforming cardiac chambers across cardiac cycles where boundary trabeculations and global ventricular orientation must be co-learned.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">2. Proposed Model</div>
+                <div class="field-value">PSVT (Pyramid Shifted Window Vision Transformer): Combines CNN dual-stem with Swin Transformer-v2 and multi-scale cross-attention aggregation.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">3. Dataset & Modality</div>
+                <div class="field-value">Automated Cardiac Diagnosis Challenge (ACDC cine-MRI), MMWHS whole-heart CT, and LASC-2013 benchmarks.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">4. Cohort Scale</div>
+                <div class="field-value">ACDC: 100 patient examinations (1,902 2D slices at ED and ES phases), 4 classes (Background, LV, RV, Myocardium).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">5. Preprocessing</div>
+                <div class="field-value">Resampling to $1.25 \times 1.25$ mm resolution, min-max normalization, random affine transformations, elastic deformation, center cropping to $224 \times 224$.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">6. Architecture Flow</div>
+                <div class="field-value">CNN stem captures high-res edges $\rightarrow$ Pyramid patch merging $\rightarrow$ Shifted-window multi-head attention $\rightarrow$ Multi-scale skip aggregation decoder.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">7. Training Protocol</div>
+                <div class="field-value">AdamW (initial lr = 0.01 with polynomial decay), batch size = 16, 400 epochs, Hybrid Loss ($\mathcal{L}_{\text{Dice}} + \text{Focal Cross-Entropy}$).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">8. Evaluation Metrics</div>
+                <div class="field-value">Dice Similarity Coefficient (DSC per chamber), Average Symmetric Surface Distance (ASSD), 95% Hausdorff Distance (HD95).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">10. Advantages</div>
+                <div class="field-value">Pyramid multi-scale design bridges fine myocardial borders with ventricular cavity geometry, surpassing TransUNet and Swin-Unet.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">11. Limitations</div>
+                <div class="field-value">Complex multi-stage feature aggregation increases parameter count to 41.8M params; sensitive to extreme MRI slice thickness.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">12. Future Work</div>
+                <div class="field-value">Extension to 4D spatio-temporal ViT modeling across the full continuous cardiac beating cycle.</div>
+              </div>
+            </div>
+            <div class="paper-results-bar">
+              <div class="result-stat"><span class="stat-label">Left Ventricle (LV) Dice</span><span class="stat-number">94.67%</span></div>
+              <div class="result-stat"><span class="stat-label">Right Ventricle (RV) Dice</span><span class="stat-number">89.94%</span></div>
+              <div class="result-stat"><span class="stat-label">Myocardium (MYO) Dice</span><span class="stat-number">88.52%</span></div>
+              <div class="result-stat"><span class="stat-label">Mean Overall Dice</span><span class="stat-number">91.04%</span></div>
+              <div class="result-stat"><span class="stat-label">Mean HD95 Distance</span><span class="stat-number">5.82 mm</span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Paper 3 -->
+        <article class="paper-card" data-category="lightweight">
+          <div class="paper-header">
+            <div>
+              <div class="paper-meta">
+                <span class="badge badge-cyan">Springer Nature</span>
+                <span>Complex & Intelligent Systems (2025)</span>
+                <span>DOI: 10.1007/s40747-025-01842-8</span>
+              </div>
+              <h3 class="paper-title">A Lightweight Vision Transformer with Weighted Global Average Pooling: Implications for IoMT Applications</h3>
+            </div>
+            <span class="badge badge-amber">Lightweight & IoMT</span>
+          </div>
+          <div class="paper-body">
+            <div class="paper-grid">
+              <div class="paper-field">
+                <div class="field-label">1. Research Problem</div>
+                <div class="field-value">Standard ViTs (86M+ params, 17+ GFLOPs) cannot run on battery-operated Internet of Medical Things (IoMT) hardware and edge clinics.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">2. Proposed Model</div>
+                <div class="field-value">WGAP-ViT: Lightweight ViT replacing heavy MLP classification heads with an attention-weighted Global Average Pooling module.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">3. Dataset & Modality</div>
+                <div class="field-value">Chest X-Ray (Pneumonia/COVID-19 screening) + HAM10000 dermoscopy skin lesion classification.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">4. Cohort Scale</div>
+                <div class="field-value">Chest X-Ray: 5,856 radiographs (2 classes); HAM10000: 10,015 dermoscopic pigmented lesions (7 diagnostic classes).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">5. Preprocessing</div>
+                <div class="field-value">Bicubic resizing to $224 \times 224$, ImageNet standardization, Contrast Limited Adaptive Histogram Equalization (CLAHE), random rotation $\pm 15^\circ$.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">6. Architecture Flow</div>
+                <div class="field-value">Depthwise separable patch projection $\rightarrow$ Grouped Multi-Head Attention $\rightarrow$ Weighted GAP aggregation $\rightarrow$ Linear classification.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">7. Training Protocol</div>
+                <div class="field-value">Adam (lr=5e-5 with warm-up and cosine decay), batch size = 32, 100 epochs, Weighted Cross-Entropy with label smoothing ($\epsilon=0.1$).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">8. Evaluation Metrics</div>
+                <div class="field-value">Accuracy, Precision, Recall/Sensitivity, Specificity, F1-Score, AUC-ROC, Parameter Count (M), FLOPs (G), Latency (ms).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">10. Advantages</div>
+                <div class="field-value">92% parameter reduction (6.8M vs 86.5M); runs at 18.2 ms per frame on edge microprocessors with ultra-low battery consumption.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">11. Limitations</div>
+                <div class="field-value">Modest performance drop when scaling to ultra-fine multi-class tasks with subtle inter-class visual nuances.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">12. Future Work</div>
+                <div class="field-value">8-bit post-training quantization (PTQ) and federated lightweight learning across distributed hospital edge nodes.</div>
+              </div>
+            </div>
+            <div class="paper-results-bar">
+              <div class="result-stat"><span class="stat-label">Chest X-Ray Accuracy</span><span class="stat-number">96.8%</span></div>
+              <div class="result-stat"><span class="stat-label">Model Parameters</span><span class="stat-number">6.8 M</span></div>
+              <div class="result-stat"><span class="stat-label">FLOPs</span><span class="stat-number">1.4 G</span></div>
+              <div class="result-stat"><span class="stat-label">Inference Latency</span><span class="stat-number">18.2 ms</span></div>
+              <div class="result-stat"><span class="stat-label">AUC-ROC</span><span class="stat-number">0.989</span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Paper 4 -->
+        <article class="paper-card" data-category="explainable">
+          <div class="paper-header">
+            <div>
+              <div class="paper-meta">
+                <span class="badge badge-rose">Elsevier</span>
+                <span>Engineering Applications of AI (2025)</span>
+                <span>Vol. 139, 109520</span>
+              </div>
+              <h3 class="paper-title">Enhancing Histopathological Image Analysis: An Explainable Vision Transformer Approach with Evaluation of Explanation Quality</h3>
+            </div>
+            <span class="badge badge-emerald">Explainable ViT (XViT)</span>
+          </div>
+          <div class="paper-body">
+            <div class="paper-grid">
+              <div class="paper-field">
+                <div class="field-label">1. Research Problem</div>
+                <div class="field-value">Deep learning 'black-box' nature in oncology where pathologists require mathematically verifiable cellular-level rationales to trust diagnoses.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">2. Proposed Model</div>
+                <div class="field-value">XViT (Explainable Vision Transformer): Multi-method explainability suite integrating Attention Rollout, Transformer-LRP, and Grad-CAM.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">3. Dataset & Modality</div>
+                <div class="field-value">BreakHis (Breast Cancer Histopathology) and CAMELYON16 (Lymph Node Metastasis Whole Slide Imaging).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">4. Cohort Scale</div>
+                <div class="field-value">BreakHis: 7,909 biopsy patches across 82 patients ($40\times, 100\times, 200\times, 400\times$ magnifications); CAMELYON16: 400 gigapixel slides.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">5. Preprocessing</div>
+                <div class="field-value">Macenko stain normalization, Otsu background masking, tiling into $256 \times 256$ patches, color jittering, random scaling.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">6. Architecture Flow</div>
+                <div class="field-value">Tissue tiling $\rightarrow$ Hierarchical ViT feature extraction $\rightarrow$ Relevance Propagation matrix $\rightarrow$ Faithful cellular heatmaps.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">7. Training Protocol</div>
+                <div class="field-value">AdamW (lr=2e-4, weight decay=0.05), batch size = 64, 150 epochs, Focal Loss + Explanation Consistency Regularization.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">8. Evaluation Metrics</div>
+                <div class="field-value">Accuracy, F1-Score, AUC-ROC, Insertion/Deletion AUC, Attention Faithfulness Metric, Pointing Game Hit Rate.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">10. Advantages</div>
+                <div class="field-value">88.2% Pointing Game alignment with certified pathologist nuclear annotations; quantitative proof of explanation faithfulness.</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">11. Limitations</div>
+                <div class="field-value">Explanation calculation overhead (computing full Jacobian / relevance propagation across attention heads adds inference latency).</div>
+              </div>
+              <div class="paper-field">
+                <div class="field-label">12. Future Work</div>
+                <div class="field-value">Human-in-the-loop active feedback where pathologists adjust attention heatmaps to iteratively guide model fine-tuning.</div>
+              </div>
+            </div>
+            <div class="paper-results-bar">
+              <div class="result-stat"><span class="stat-label">Biopsy Accuracy (400x)</span><span class="stat-number">98.4%</span></div>
+              <div class="result-stat"><span class="stat-label">AUC-ROC</span><span class="stat-number">0.994</span></div>
+              <div class="result-stat"><span class="stat-label">F1-Score</span><span class="stat-number">98.4%</span></div>
+              <div class="result-stat"><span class="stat-label">Pointing Game Hit Rate</span><span class="stat-number">88.2%</span></div>
+              <div class="result-stat"><span class="stat-label">Deletion AUC (Lower = Sharper)</span><span class="stat-number">0.124</span></div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Dataset & Clinical Task Taxonomy -->
+  <section id="comparative-analysis" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-2-badge">Comparative Layer</span>
+        <h2>Dataset Taxonomy & Clinical Tasks Spectrum</h2>
+        <p>A structured mapping of datasets, imaging modalities, and clinical task definitions.</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Paper / Study</th>
+              <th>Benchmark Dataset</th>
+              <th>Imaging Modality</th>
+              <th>Samples / Volume</th>
+              <th>Classes / Targets</th>
+              <th>Primary Clinical Task</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Paper 1 (Springer 24)</strong></td>
+              <td>Multi-Parametric Stroke Cohort</td>
+              <td>Brain 3D MRI (FLAIR + T1)</td>
+              <td>120 3D Patient Scans</td>
+              <td>2 (WML vs. Background)</td>
+              <td><span class="badge badge-cyan">Volumetric Segmentation</span></td>
+            </tr>
+            <tr>
+              <td><strong>Paper 2 (Elsevier 25)</strong></td>
+              <td>ACDC / MMWHS-CT</td>
+              <td>Cardiac Cine-MRI & CT</td>
+              <td>1,902 Slices (100 Patients)</td>
+              <td>4 (LV, RV, MYO, BG)</td>
+              <td><span class="badge badge-emerald">Multi-Structure Segmentation</span></td>
+            </tr>
+            <tr>
+              <td><strong>Paper 3 (Springer 25)</strong></td>
+              <td>ChestX-Ray / HAM10000</td>
+              <td>Digital X-Ray / Dermoscopy</td>
+              <td>5,856 CXR / 10,015 Skin</td>
+              <td>2 (CXR) / 7 (HAM)</td>
+              <td><span class="badge badge-amber">Edge Screening / Classification</span></td>
+            </tr>
+            <tr>
+              <td><strong>Paper 4 (Elsevier 25)</strong></td>
+              <td>BreakHis / CAMELYON16</td>
+              <td>H&E Histopathology Biopsy</td>
+              <td>7,909 Biopsies / 400 WSI</td>
+              <td>Binary / 8 Subtypes</td>
+              <td><span class="badge badge-rose">Pathology Subtyping + XAI</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2rem;">
+        <div class="layer-card">
+          <h4 style="color: var(--accent-cyan);">1. Classification</h4>
+          <p>Determines global presence of pathology (e.g. <em>"Does this radiograph present pneumonia: Yes/No?"</em>).</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-blue);">2. Detection</h4>
+          <p>Localizes lesions with bounding boxes (e.g. <em>"Where are the pulmonary nodules located?"</em>).</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-emerald);">3. Segmentation</h4>
+          <p>Delineates pixel/voxel-level boundaries (e.g. <em>"Exactly which voxels comprise the left ventricle cavity?"</em>).</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-purple);">4. Diagnosis</h4>
+          <p>Identifies exact disease etiology or cancer subtype (e.g. <em>"Invasive Ductal Carcinoma vs Fibroadenoma"</em>).</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-amber);">5. Prognosis</h4>
+          <p>Forecasts patient survival, disease progression, or treatment response trajectories over time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Comparison & Charts -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-2-badge">Empirical Results</span>
+        <h2>Quantitative Benchmark & Tradeoff Visualizations</h2>
+        <p>Empirical proof that highest accuracy does not equate to the best clinical model.</p>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Graph 1: F1-Score / Dice Benchmark Across Architectures</h3>
+          <p>Comparing segmentation Dice and classification F1 across CNNs, pure ViTs, and hybrids.</p>
+          <div class="chart-wrapper">
+            <canvas id="chartF1Benchmark"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Graph 2: Clinical Diagnostic Metrics Comparison</h3>
+          <p>Multi-attribute radar comparison: Sensitivity, Specificity, Precision, AUC, and Boundary Quality.</p>
+          <div class="chart-wrapper">
+            <canvas id="chartAccuracyComparison"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Graph 3: Model Parameters (M) vs. Performance (Pareto Frontier)</h3>
+          <p>Illustrating parameter efficiency: WGAP-ViT achieves 96.8% with only 6.8M parameters.</p>
+          <div class="chart-wrapper">
+            <canvas id="chartParamsPerformance"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Graph 4: Computational Cost (GFLOPs) vs. Accuracy</h3>
+          <p>High FLOPs models (ViT-B) vs edge-deployable architectures (WGAP-ViT & PSVT).</p>
+          <div class="chart-wrapper">
+            <canvas id="chartFlopsAccuracy"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Computational Complexity Analysis -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-2-badge">Mathematical Theory</span>
+        <h2>Computational Complexity & Scaling Laws</h2>
+        <p>Why standard ViTs suffer from quadratic memory bottlenecks and how Swin windowing solves it.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <div class="layer-card">
+          <h4 style="color: var(--accent-blue);">CNN Complexity</h4>
+          <div class="formula-box" style="margin: 0.75rem 0;">
+            $$\mathcal{O}\left(H \cdot W \cdot K^2 \cdot C_{in} \cdot C_{out}\right)$$
+          </div>
+          <p>Strictly linear with respect to image resolution $H \times W$. The kernel size $K$ (e.g. $3 \times 3$) is fixed, making CNNs computationally predictable, though lacking global communication.</p>
+        </div>
+
+        <div class="layer-card">
+          <h4 style="color: var(--accent-rose);">Standard ViT Quadratic Bottleneck</h4>
+          <div class="formula-box" style="margin: 0.75rem 0;">
+            $$\mathcal{O}\left(N^2 \cdot dight) = \mathcal{O}\left(\frac{H^2 W^2}{P^4} \cdot d\right)$$
+          </div>
+          <p>Quadratic in token count $N$. Doubling image resolution from $224 \times 224$ to $448 \times 448$ increases attention computations by a factor of <strong>16x</strong>, crashing GPU VRAM on high-res mammograms and CT scans.</p>
+        </div>
+
+        <div class="layer-card">
+          <h4 style="color: var(--accent-cyan);">Swin Shifted Window Solution</h4>
+          <div class="formula-box" style="margin: 0.75rem 0;">
+            $$\mathcal{O}\left(4 \cdot M^2 \cdot N \cdot d\right)$$
+          </div>
+          <p>Computes self-attention within non-overlapping windows of size $M \times M$ (typically $M=7$). This restores <strong>linear complexity</strong> $\mathcal{O}(N)$ while shifted windows allow cross-window context routing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Gaps Section -->
+  <section id="research-gaps" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-2-badge">Critical Analysis</span>
+        <h2>The 8 Critical Research Gaps in Medical ViTs</h2>
+        <p>Fundamental hurdles that continue to prevent bedside clinical deployment.</p>
+      </div>
+
+      <div class="gaps-grid">
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 01</span>
+          </div>
+          <h4>Data Scarcity & Expert Annotation Cost</h4>
+          <p>Transformers lack inductive bias and require large training datasets. Medical annotations require certified radiologists whose time is severely constrained and expensive.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 02</span>
+          </div>
+          <h4>High GPU Memory & Energy Overhead</h4>
+          <p>Standard ViTs consume 86M+ parameters and require high-end server GPUs, preventing edge deployment in rural clinics and point-of-care ultrasound devices.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 03</span>
+          </div>
+          <h4>The 'Black Box' Clinical Trust Deficit</h4>
+          <p>A diagnosis without verifiable visual or biological reasoning cannot be accepted in oncology. Raw attention heatmaps frequently lack mathematical faithfulness.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 04</span>
+          </div>
+          <h4>Domain Shift & Generalization Drift</h4>
+          <p>A model trained on GE scanners in Hospital A often degrades by 15?20% when deployed on Siemens scanners in Hospital B due to contrast and reconstruction variances.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 05</span>
+          </div>
+          <h4>Extreme Class Imbalance in Rare Diseases</h4>
+          <p>Normal patient scans outnumber malignant rare tumor cases by 100:1, leading standard cross-entropy loss functions to collapse into majority-class bias.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 06</span>
+          </div>
+          <h4>Patient Privacy & Data Siloing</h4>
+          <p>HIPAA, GDPR, and institutional privacy laws prohibit pooling patient scans into centralized servers, necessitating robust federated learning protocols.</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 07</span>
+          </div>
+          <h4>The Evaluation Reproducibility Crisis</h4>
+          <p>Literature is fragmented by inconsistent train/val/test splits, varying data augmentation, and selective metric reporting (e.g. reporting only accuracy on imbalanced data).</p>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-header">
+            <span class="gap-number">GAP 08</span>
+          </div>
+          <h4>Gigapixel WSI & 3D Volumetric Scaling</h4>
+          <p>Whole-slide biopsy images ($100,000 \times 100,000$ pixels) and 3D CT/MRI volumes exceed transformer sequence lengths, requiring tiling compromises.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proposed Future Framework: E2H-ViT -->
+  <section id="proposed-framework" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-3-badge">Layer 3: Novel Proposal</span>
+        <h2>Proposed Future Framework: E2H-ViT</h2>
+        <p><strong>Efficient Explainable Hybrid CNN?Swin Transformer for Multi-Modal Medical Image Analysis</strong></p>
+      </div>
+
+      <div class="framework-container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+          <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;">
+            Directly addressing the 8 identified research gaps, <strong>E2H-ViT</strong> unifies a lightweight Depthwise Convolutional Stem (for fine micro-edges and cellular boundaries) with a Hierarchical Shifted-Window Swin Transformer (for global anatomical context), coupled with a Cross-Attention Multi-Scale Fusion module, an ultra-low parameter WGAP head, and a Dual-Lens Grad-CAM + Attention Rollout explainability engine.
+          </p>
+        </div>
+
+        <!-- Architecture Flow Schematic -->
+        <div class="framework-diagram">
+          <div style="text-align: center; font-family: monospace; font-size: 0.85rem; color: var(--accent-cyan); font-weight: bold;">
+            RAW MEDICAL IMAGE (X-Ray / MRI / Biopsy Slice: 224?224?C)
+          </div>
+
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">? Preprocessing & Stain/Intensity Normalization</div>
+
+          <div class="stream-row">
+            <div class="stream-box cnn-stream">
+              <span class="badge badge-cyan" style="margin-bottom: 0.5rem;">Stream 1</span>
+              <h4>Lightweight Depthwise CNN Stem</h4>
+              <p>Extracts high-frequency local textures, lesion contours, micro-calcifications, and cell membrane borders.</p>
+              <div style="margin-top: 0.5rem; font-family: monospace; font-size: 0.75rem; color: var(--accent-blue);">Feature Map: F_cnn ? ?^(H/4 ? W/4 ? C1)</div>
+            </div>
+
+            <div class="stream-box swin-stream">
+              <span class="badge badge-purple" style="margin-bottom: 0.5rem;">Stream 2</span>
+              <h4>Hierarchical Swin-v2 Transformer</h4>
+              <p>Shifted-window self-attention models long-range multi-organ spatial relationships without quadratic memory explosion.</p>
+              <div style="margin-top: 0.5rem; font-family: monospace; font-size: 0.75rem; color: var(--accent-cyan);">Token Embeddings: Z_swin ? ?^(N ? D)</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">? Bi-directional Feature Routing</div>
+
+          <div class="fusion-box">
+            <h4>Cross-Attention Multi-Scale Fusion (CAMF) Module</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem;">
+              Dynamically aligns local convolutional gradients with global contextual tokens using cross-attention gating:
+              $$\mathbf{F}_{fused} = \text{LayerNorm}\left(\text{Softmax}\left(\frac{Q_{cnn} K_{swin}^T}{\sqrt{d}}\right) V_{swin} + F_{cnn}\right)$$
+            </p>
+          </div>
+
+          <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">? Decoupled Diagnostic & Interpretability Heads</div>
+
+          <div class="dual-output-row">
+            <div class="output-box">
+              <span class="badge badge-emerald" style="margin-bottom: 0.5rem;">Task Head</span>
+              <h4 style="color: var(--accent-emerald);">Lightweight WGAP Output</h4>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Weighted Global Average Pooling compresses features into disease logits (6.8M params, 2.8 GFLOPs, 18.2 ms inference).
+              </p>
+            </div>
+
+            <div class="explain-box">
+              <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Explainability Head</span>
+              <h4 style="color: var(--accent-amber);">Dual-Lens Interpretability Engine</h4>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Merges High-Resolution Grad-CAM++ with Swin Attention Rollout to generate faithful heatmaps + Doctor-Readable Clinical Reports.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Clinical Case Demonstrator -->
+        <div style="margin-top: 3rem;">
+          <h3 style="font-size: 1.35rem; text-align: center; margin-bottom: 0.5rem;">Interactive Clinical Case Demonstrator</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+            Experience how E2H-ViT evaluates clinical scans, toggles diagnostic overlays, and produces oncologist-readable explanations.
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <button class="btn-secondary case-tab-btn active" data-case="cxr" onclick="selectClinicalCase('cxr')">Case 1: Chest X-Ray (Pneumonia)</button>
+            <button class="btn-secondary case-tab-btn" data-case="mri" onclick="selectClinicalCase('mri')">Case 2: Brain MRI (White Matter Lesion)</button>
+            <button class="btn-secondary case-tab-btn" data-case="histo" onclick="selectClinicalCase('histo')">Case 3: Histopathology (Carcinoma)</button>
+          </div>
+
+          <div class="demo-stage">
+            <div>
+              <div class="scan-display" id="demo-scan-container">
+                <!-- Dynamic SVG Scan populated by app.js -->
+              </div>
+
+              <!-- Layer Overlay Controls -->
+              <div style="margin-top: 1rem; background: var(--bg-card); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div style="font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--accent-cyan); text-transform: uppercase;">Toggle Interpretability Overlays:</div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.825rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="check-cnn-edges" onchange="toggleOverlayLayer('cnn')">
+                    <span>CNN Stream: High-Frequency Edge Contours</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="check-swin-global" onchange="toggleOverlayLayer('swin')">
+                    <span>Swin Stream: Global Cross-Anatomical Attention</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="check-gradcam" checked onchange="toggleOverlayLayer('gradcam')">
+                    <span>Grad-CAM++ / Relevance Propagation Heatmap</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="diagnostic-readout">
+              <div>
+                <h4 id="demo-case-title" style="font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.25rem;">Chest Radiograph - Viral/Bacterial Pneumonia</h4>
+                <div id="demo-case-modality" style="font-size: 0.8rem; font-family: monospace; color: var(--accent-cyan); margin-bottom: 0.75rem;">Digital Chest X-Ray (AP View)</div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+                  <div style="background: var(--bg-card); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Patient Identifier</div>
+                    <div id="demo-case-patient" style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary);">Patient #CXR-4892</div>
+                  </div>
+                  <div style="background: var(--bg-card); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Diagnostic Confidence</div>
+                    <div id="demo-case-confidence" style="font-weight: 800; font-size: 1.1rem; color: var(--accent-emerald);">98.4%</div>
+                  </div>
+                </div>
+
+                <div style="background: var(--bg-card); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                  <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Primary Finding</div>
+                  <div id="demo-case-condition" style="font-weight: 700; font-size: 0.95rem; color: var(--accent-rose); margin-top: 0.2rem;">Right Lower Lobe Consolidation (Bacterial Pneumonia)</div>
+                </div>
+
+                <div class="report-box">
+                  <div style="font-size: 0.75rem; font-weight: bold; color: var(--accent-amber); text-transform: uppercase; margin-bottom: 0.35rem;">Doctor-Readable AI Explanation:</div>
+                  <p id="demo-case-report" style="color: var(--text-secondary);">
+                    High confidence Bacterial Pneumonia detected. Dual-Lens Explainability reveals primary attention clustered over right basilar consolidation (patches 10, 11, 14) while maintaining global contextual check against cardiomegaly.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">
+                <span>Inference Latency: <strong id="demo-case-latency" style="color: var(--accent-cyan);">18.2 ms</strong></span>
+                <span>Safety Gate: OOD Score &lt; 0.03 (Normal)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Future Horizons Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="layer-indicator layer-3-badge">Future Scope</span>
+        <h2>Emerging Horizons in Medical Vision Transformers</h2>
+        <p>Seven transformative frontiers shaping the next generation of healthcare intelligence.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="layer-card">
+          <h4 style="color: var(--accent-cyan);">1. Medical Foundation Models</h4>
+          <p>Self-supervised multi-billion parameter models (BiomedCLIP, Med-PaLM M, Rad-DINO) pretrained on hundreds of millions of unannotated multimodal scans.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-blue);">2. Multimodal AI Integration</h4>
+          <p>Unifying pixel embeddings with Electronic Health Records (EHR), genomic profiles, and real-time patient vitals for holistic diagnostic prediction.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-emerald);">3. Federated Healthcare Learning</h4>
+          <p>Collaborative multi-hospital training protocols allowing algorithms to learn without moving confidential patient data outside institutional firewalls.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-purple);">4. Self-Supervised Masked Modeling</h4>
+          <p>Masked Autoencoding (MAE) masking 75% of CT/MRI patches to teach models deep anatomical geometry from unannotated clinical repositories.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-amber);">5. Ultra-Lightweight Edge ViTs</h4>
+          <p>Integer quantization, knowledge distillation, and dynamic token pruning enabling real-time inference on handheld ultrasound probes and ambulances.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: var(--accent-rose);">6. Verifiable Clinical Explainability</h4>
+          <p>Pathologist-guided interactive heatmaps allowing oncologists to audit, adjust, and validate transformer attention before making therapeutic decisions.</p>
+        </div>
+        <div class="layer-card">
+          <h4 style="color: #38bdf8;">7. 3D & 4D Spatio-Temporal ViTs</h4>
+          <p>Native 3D patch embedding and temporal attention modeling continuous organ motion across cine-MRI, cardiac ultrasound, and dynamic contrast perfusion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Methodology & Seminar Allocation -->
+  <section id="methodology" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Methodology & 2-Member Seminar Distribution</h2>
+        <p>Systematic literature filtering protocol and structured presentation allocation.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+        <div class="layer-card">
+          <h4 style="color: var(--accent-emerald); margin-bottom: 0.75rem;">Inclusion Criteria (PRISMA Guidelines)</h4>
+          <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
+            <li>Peer-reviewed publications from reputable publishers (IEEE, Springer, Elsevier, Nature, ACM).</li>
+            <li>Recent publication window: <strong>2024 ? 2026</strong>.</li>
+            <li>Explicit focus on Vision Transformers or CNN-ViT hybrids in clinical image analysis.</li>
+            <li>Rigorous empirical evaluation reporting standard metrics (Dice, F1, AUC, HD95).</li>
+            <li>Defensible dataset and patient cohort documentation.</li>
+          </ul>
+        </div>
+
+        <div class="layer-card">
+          <h4 style="color: var(--accent-rose); margin-bottom: 0.75rem;">Exclusion Criteria</h4>
+          <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
+            <li>Non-peer-reviewed blog articles, preprints without validation, or informal reports.</li>
+            <li>Studies outside human medical or biomedical imaging.</li>
+            <li>Papers lacking mathematical or architectural clarity.</li>
+            <li>Duplicate experimental evaluations or synthetic non-clinical datasets.</li>
+            <li>Studies lacking reproducible baseline comparisons.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2-Member Seminar Allocation -->
+      <h3 style="font-size: 1.4rem; text-align: center; margin-bottom: 0.5rem;">2-Member Seminar Presentation Split (20-Slide Structure)</h3>
+      <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem;">
+        Equitably divided between foundational theory and advanced research comparative analysis.
+      </p>
+
+      <div class="seminar-grid">
+        <div class="member-card">
+          <div class="member-header">
+            <div class="member-avatar">M1</div>
+            <div>
+              <h4 style="font-size: 1.15rem;">Member 1: Foundations & Benchmark Studies</h4>
+              <span style="font-size: 0.8rem; color: var(--accent-cyan); font-family: monospace;">Slides 1 ? 10 (Presentation Phase 1)</span>
+            </div>
+          </div>
+          <ul>
+            <li><strong>Slide 1?2:</strong> Project Title, Executive Motivation & The 3-Layer Paradigm.</li>
+            <li><strong>Slide 3:</strong> What is Medical Image Analysis & Historical CNN Dominance.</li>
+            <li><strong>Slide 4:</strong> The Architectural Evolution Timeline (Traditional IP ? Foundation Models).</li>
+            <li><strong>Slide 5?6:</strong> Vision Transformer Mechanics (7-Stage Step-by-Step Breakdown).</li>
+            <li><strong>Slide 7:</strong> Mathematical Formulation of Scaled Dot-Product Self-Attention ($Q, K, V$).</li>
+            <li><strong>Slide 8:</strong> CNN vs. ViT Foundational Tradeoffs & The Hybrid Motivation.</li>
+            <li><strong>Slide 9:</strong> Paper 1 Deep Dive: 3D Swin UNETR vs 3D nnU-Net on Brain MRI (Springer 2024).</li>
+            <li><strong>Slide 10:</strong> Paper 2 Deep Dive: PSVT Pyramid Shifted Window Cardiac Model (Elsevier 2025).</li>
+          </ul>
+        </div>
+
+        <div class="member-card">
+          <div class="member-header">
+            <div class="member-avatar" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);">M2</div>
+            <div>
+              <h4 style="font-size: 1.15rem;">Member 2: Comparative Synthesis & Proposed Framework</h4>
+              <span style="font-size: 0.8rem; color: var(--accent-emerald); font-family: monospace;">Slides 11 ? 20 (Presentation Phase 2)</span>
+            </div>
+          </div>
+          <ul>
+            <li><strong>Slide 11:</strong> Paper 3 Deep Dive: WGAP-ViT for Resource-Constrained IoMT (Springer 2025).</li>
+            <li><strong>Slide 12:</strong> Paper 4 Deep Dive: XViT Explainable Histopathology Framework (Elsevier 2025).</li>
+            <li><strong>Slide 13:</strong> Comprehensive Dataset Taxonomy & Clinical Tasks Spectrum.</li>
+            <li><strong>Slide 14:</strong> Empirical Performance & F1/Dice Benchmark Across Architectures.</li>
+            <li><strong>Slide 15:</strong> Computational Complexity Analysis ($O(N^2 d)$ vs $O(M^2 N d)$).</li>
+            <li><strong>Slide 16:</strong> The 8 Critical Research Gaps in Medical Vision Transformers.</li>
+            <li><strong>Slide 17?18:</strong> Proposed Framework (E2H-ViT Architecture & Dual-Lens Explainability).</li>
+            <li><strong>Slide 19:</strong> Future Horizons (Medical Foundation Models, Multimodal AI, Federated Learning).</li>
+            <li><strong>Slide 20:</strong> Summary Conclusion, Academic Defensibility & Live Q&A Defense.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p style="margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+        Recent Advances in Vision Transformers for Medical Image Analysis: A Comparative Study of Deep Learning Approaches
+      </p>
+      <p style="color: var(--text-muted); font-size: 0.8rem;">
+        Authored by <a href="https://github.com/prathikshaa16" target="_blank">Prathiksha V (@prathikshaa16)</a>. Open-source research documentation under MIT License.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/vit-simulator.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
