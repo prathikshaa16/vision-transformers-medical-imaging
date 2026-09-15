@@ -1,9 +1,9 @@
-# Recent Advances in Vision Transformers for Medical Image Analysis: A Comparative Study of Deep Learning Approaches
+﻿# Recent Advances in Vision Transformers for Medical Image Analysis: A Comparative Study of Deep Learning Approaches
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/prathikshaa16/vision-transformers-medical-imaging?style=social)](https://github.com/prathikshaa16/vision-transformers-medical-imaging)
 [![Literature Synthesis](https://img.shields.io/badge/Literature-Springer%20%7C%20Elsevier%202024--2026-teal.svg)](#4-benchmark-research-papers)
-[![Live Web Portal](https://img.shields.io/badge/Web_Portal-Interactive_Dashboard-success.svg)](#interactive-research-web-portal)
+[![Live Web Portal](https://img.shields.io/badge/Web_Portal-Interactive_Dashboard-success.svg)](https://prathikshaa16.github.io/vision-transformers-medical-imaging/)
 
 > **A 3-Layer Mini Research Study**: *Research Papers Systematic Extraction $\rightarrow$ Rigorous Comparative Benchmark $\rightarrow$ Proposed Future Framework (E2H-ViT)*
 
@@ -337,3 +337,4 @@ python -m http.server 8000
 ## ?? License
 
 This research synthesis, documentation, and web portal source code are released under the [MIT License](LICENSE).
+
