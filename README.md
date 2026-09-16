@@ -427,31 +427,6 @@ When `run_app.py` or `uvicorn server:app --port 8000` is running, the backend ex
 
 ---
 
-## 2-Member Seminar Presentation Split (20 Slides)
-
-### Member 1: Fundamentals & Papers 1 & 2 (Slides 1-10)
-- **Slide 1-2**: Project Title, Motivation, and Research Questions.
-- **Slide 3**: Background: Medical Image Analysis & CNN Limitations.
-- **Slide 4**: Evolution Timeline: Traditional ML -> Hybrids.
-- **Slide 5-6**: Vision Transformer Mechanics (7-Stage Walkthrough).
-- **Slide 7**: Self-Attention Mechanics (Q, K, V & Equation).
-- **Slide 8**: CNN vs. ViT Architectural Comparison.
-- **Slide 9**: Paper 1: 3D CNN vs 3D Swin on Brain MRI (Springer '24).
-- **Slide 10**: Paper 2: PSVT Hybrid Model on Cardiac Cine (Elsevier '25).
-
-### Member 2: Papers 3 & 4, Benchmark & Proposed Framework (Slides 11-20)
-- **Slide 11**: Literature Study Selection Methodology & Criteria.
-- **Slide 12**: Paper 3: LightAMViT Lightweight Model for IoMT (Springer '25).
-- **Slide 13**: Paper 4: XViT Explainable Model on Histopathology (Elsevier '25).
-- **Slide 14**: Master Comparative Analysis (Architectures & Datasets).
-- **Slide 15**: Task-Specific Performance & Computational Complexity.
-- **Slide 16**: Five Key Research Gaps Identified from Literature.
-- **Slide 17-18**: Proposed Future Framework: E2H-ViT Architecture & Rationale.
-- **Slide 19**: Future Research Horizons (Multimodal, Federated, Foundation).
-- **Slide 20**: Conclusion, Summary Takeaways & Q&A Defense.
-
----
-
 ## Local Quick Start
 
 To launch the interactive research web portal and working diagnostic system locally:
