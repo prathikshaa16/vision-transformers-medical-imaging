@@ -22,30 +22,106 @@
 <body>
 
   <!-- Navigation Bar -->
-  <nav class="navbar">
-    <div class="container nav-content">
-      <a href="#top" class="brand">
+  <nav class="navbar" id="main-navbar">
+    <div class="nav-container">
+      <a href="#top" class="brand" aria-label="MedViT Research Homepage">
         <div class="brand-icon">ViT</div>
-        <span>MedViT Research</span>
+        <div class="brand-text">
+          <span class="brand-title">MedViT Research</span>
+          <span class="brand-subtitle">Comparative Study</span>
+        </div>
       </a>
-      <ul class="nav-links">
-        <li><a href="#rqs">RQs</a></li>
-        <li><a href="#background">Background</a></li>
-        <li><a href="#evolution">Evolution</a></li>
-        <li><a href="#vit-proper">ViT Architecture</a></li>
-        <li><a href="#cnn-vs-vit">CNN vs ViT</a></li>
-        <li><a href="#methodology">Methodology</a></li>
-        <li><a href="#papers">4 Papers</a></li>
-        <li><a href="#comparative-analysis">Comparison</a></li>
-        <li><a href="#research-gaps">Gaps</a></li>
-        <li><a href="#proposed-framework">Framework</a></li>
-        <li><a href="#diagnostic-system" style="color: var(--accent-cyan); font-weight: 700;">Live System &#9889;</a></li>
+
+      <ul class="nav-links" id="desktop-nav-links">
+        <li><a href="#rqs" class="nav-link">RQs</a></li>
+        <li class="nav-item-dropdown">
+          <a href="#background" class="nav-link dropdown-trigger">
+            Foundations <svg class="dropdown-chevron" width="9" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="nav-dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="#background" class="dropdown-item">Theoretical Foundations</a>
+              <a href="#evolution" class="dropdown-item">Architectural Evolution</a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item-dropdown">
+          <a href="#vit-proper" class="nav-link dropdown-trigger">
+            Architecture <svg class="dropdown-chevron" width="9" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="nav-dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="#vit-proper" class="dropdown-item">7-Stage ViT Pipeline</a>
+              <a href="#self-attention" class="dropdown-item">Self-Attention Mechanism</a>
+              <a href="#cnn-vs-vit" class="dropdown-item">CNN vs. ViT Comparison</a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item-dropdown">
+          <a href="#papers" class="nav-link dropdown-trigger">
+            Papers <svg class="dropdown-chevron" width="9" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <div class="nav-dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="#methodology" class="dropdown-item">Survey Methodology</a>
+              <a href="#papers" class="dropdown-item">4 Benchmark Papers</a>
+            </div>
+          </div>
+        </li>
+        <li><a href="#comparative-analysis" class="nav-link">Comparison</a></li>
+        <li><a href="#research-gaps" class="nav-link">Gaps</a></li>
+        <li><a href="#proposed-framework" class="nav-link">Framework</a></li>
       </ul>
+
       <div class="nav-actions">
-        <a href="#diagnostic-system" class="btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span>&#9889;</span> Diagnostic App</a>
-        <button id="theme-toggle" class="btn-icon" title="Toggle Theme"><span id="theme-icon"></span></button>
-        <a href="https://github.com/prathikshaa16/vision-transformers-medical-imaging" target="_blank" class="btn-github">GitHub</a>
+        <a href="#diagnostic-system" class="nav-cta" title="Launch Interactive Diagnostic System">
+          <span class="pulse-dot"></span>
+          <span class="cta-icon">&#9889;</span>
+          <span class="cta-text">Diagnostic App</span>
+        </a>
+        <button id="theme-toggle" class="btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <span id="theme-icon"></span>
+        </button>
+        <a href="https://github.com/prathikshaa16/vision-transformers-medical-imaging" target="_blank" class="btn-github" title="View Source on GitHub" aria-label="GitHub Repository">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span class="github-text">GitHub</span>
+        </a>
+        <button id="mobile-menu-toggle" class="btn-icon mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg class="hamburger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer">
+      <ul class="mobile-nav-links">
+        <li><a href="#rqs" class="mobile-nav-link">Research Questions (RQs)</a></li>
+        <li class="mobile-nav-heading">Foundations</li>
+        <li><a href="#background" class="mobile-nav-link sub">Theoretical Foundations</a></li>
+        <li><a href="#evolution" class="mobile-nav-link sub">Architectural Evolution</a></li>
+        <li class="mobile-nav-heading">Architecture &amp; Simulator</li>
+        <li><a href="#vit-proper" class="mobile-nav-link sub">7-Stage ViT Pipeline</a></li>
+        <li><a href="#self-attention" class="mobile-nav-link sub">Self-Attention Mechanism</a></li>
+        <li><a href="#cnn-vs-vit" class="mobile-nav-link sub">CNN vs. ViT Comparison</a></li>
+        <li class="mobile-nav-heading">Research Literature</li>
+        <li><a href="#methodology" class="mobile-nav-link sub">Study Methodology</a></li>
+        <li><a href="#papers" class="mobile-nav-link sub">4 Benchmark Papers</a></li>
+        <li><a href="#comparative-analysis" class="mobile-nav-link">Cross-Study Comparison</a></li>
+        <li><a href="#research-gaps" class="mobile-nav-link">5 Core Research Gaps</a></li>
+        <li class="mobile-nav-heading">Implemented Framework</li>
+        <li><a href="#proposed-framework" class="mobile-nav-link sub">E2H-ViT Architecture</a></li>
+        <li><a href="#diagnostic-system" class="mobile-nav-link highlight">&#9889; Working Diagnostic System</a></li>
+      </ul>
     </div>
   </nav>
 

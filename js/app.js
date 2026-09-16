@@ -1,4 +1,4 @@
-﻿// Core Application Controller & Interactive Framework Explorer
+// Core Application Controller & Interactive Framework Explorer
 
 // Theme Management
 function initTheme() {
@@ -95,7 +95,79 @@ function inspectFrameworkModule(key) {
   if (benefitEl) benefitEl.innerText = comp.benefit;
 }
 
+// Mobile Drawer Controller
+function initMobileMenu() {
+  const toggleBtn = document.getElementById("mobile-menu-toggle");
+  const drawer = document.getElementById("mobile-nav-drawer");
+  if (!toggleBtn || !drawer) return;
+
+  const hamburgerIcon = toggleBtn.querySelector(".hamburger-icon");
+  const closeIcon = toggleBtn.querySelector(".close-icon");
+
+  function setOpen(isOpen) {
+    drawer.classList.toggle("open", isOpen);
+    toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    if (hamburgerIcon) hamburgerIcon.style.display = isOpen ? "none" : "block";
+    if (closeIcon) closeIcon.style.display = isOpen ? "block" : "none";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    const isOpen = drawer.classList.contains("open");
+    setOpen(!isOpen);
+  });
+
+  // Auto-close on link click
+  drawer.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && drawer.classList.contains("open")) {
+      setOpen(false);
+    }
+  });
+}
+
+// Scroll-Spy for Active Navbar Highlighting
+function initScrollSpy() {
+  const sections = document.querySelectorAll("section[id], header[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  if (!sections.length || !navLinks.length) return;
+
+  function onScroll() {
+    const scrollPos = window.scrollY + 100;
+    let currentId = "";
+
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentId = sec.getAttribute("id");
+      }
+    });
+
+    if (currentId) {
+      navLinks.forEach(link => {
+        const href = link.getAttribute("href");
+        if (href === `#${currentId}`) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initMobileMenu();
+  initScrollSpy();
   inspectFrameworkModule("cnn");
 });
+
