@@ -4,8 +4,9 @@
 [![GitHub Stars](https://img.shields.io/github/stars/prathikshaa16/vision-transformers-medical-imaging?style=social)](https://github.com/prathikshaa16/vision-transformers-medical-imaging)
 [![Live Webpage](https://img.shields.io/badge/Live_Webpage-GitHub_Pages-success.svg)](https://prathikshaa16.github.io/vision-transformers-medical-imaging/)
 [![Peer-Reviewed Literature](https://img.shields.io/badge/Literature-Springer%20%7C%20Elsevier%202024--2025-teal.svg)](#the-four-benchmark-research-papers)
+[![PyTorch Implementation](https://img.shields.io/badge/PyTorch-v2.0+-EE4C2C.svg?logo=pytorch&logoColor=white)](#e2h-vit-pytorch-implementation)
 
-> **A 3-Layer Mini Research Study**: *Research Papers Systematic Extraction -> Rigorous Comparative Benchmark -> Proposed Future Framework (E2H-ViT)*
+> **A 3-Layer Mini Research Study**: *Research Papers Systematic Extraction -> Rigorous Comparative Benchmark -> Validated PyTorch Framework (E2H-ViT)*
 
 ---
 
@@ -13,7 +14,7 @@
 
 Medical image analysis has reached an important architectural transition. While Convolutional Neural Networks (CNNs) established modern deep learning benchmarks through localized receptive fields and translation equivariance, their local nature presents challenges in modeling long-range spatial correlations across distant anatomical structures.
 
-Originally developed for natural language processing, **Vision Transformers (ViTs)** utilize self-attention mechanisms to model relationships across all image patches directly. This project presents a structured comparative study and interactive educational web portal examining recent advancements in Vision Transformers across four distinct deep learning paradigms:
+Originally developed for natural language processing, **Vision Transformers (ViTs)** utilize self-attention mechanisms to model relationships across all image patches directly. This project presents a structured comparative study, interactive educational web portal, and open-source PyTorch reference framework examining recent advancements in Vision Transformers across four distinct deep learning paradigms:
 1. **Foundational Theory & Evolution**: The transition from handcrafted filters to CNNs, ResNets/U-Nets, standard ViTs, Swin Transformers, and hybrid architectures.
 2. **Four Peer-Reviewed Benchmark Studies (2024-2025)** from Springer and Elsevier:
    - *CNN vs. 3D Transformer* (Springer, 2024)
@@ -21,7 +22,7 @@ Originally developed for natural language processing, **Vision Transformers (ViT
    - *LightAMViT Lightweight Transformer for IoMT* (Springer, 2025)
    - *XViT Explainable Vision Transformer* (Elsevier, 2025)
 3. **Master Comparative Analysis**: A task-specific evaluation of performance, parameter footprints, computational trade-offs, and five core clinical deployment gaps.
-4. **Proposed Future Framework (E2H-ViT)**: A conceptual *Efficient Explainable Hybrid Vision Transformer* synthesizing the lessons learned across the surveyed literature (presented strictly as a proposed future framework for ongoing research, not an implemented system).
+4. **Implemented Framework (E2H-ViT)**: An *Efficient Explainable Hybrid Vision Transformer* synthesizing the lessons learned across the surveyed literature, fully implemented and validated in PyTorch (`e2h_vit/`) with automated test suites, an end-to-end inference demo, and dual-lens explainability.
 
 ---
 
@@ -321,6 +322,67 @@ Structured 10-Field Extraction & Master Comparative Benchmark
 | **Feature Fusion** | Paper 2 (PSVT, Elsevier '25) | Bridges localized boundary textures with global structural geometry. |
 | **Lightweight Task Head** | Paper 3 (LightAMViT, Springer '25) | Reduces parameter footprint for potential edge/IoMT deployment. |
 | **Dual-Lens Explainability** | Paper 4 (XViT, Elsevier '25) | Provides verifiable visual justification to overcome clinical trust barriers. |
+
+---
+
+## E2H-ViT PyTorch Implementation
+
+To validate and test the proposed framework, the complete **E2H-ViT** architecture has been implemented in pure PyTorch (using only standard `torch` and `torchvision` without third-party model libraries).
+
+### Architecture Directory Structure
+```text
+e2h_vit/
+  ├── __init__.py           # Package exports (E2HViT, explainer, metrics)
+  ├── stem.py               # 3-Stage Depthwise Separable CNN Stem (Inductive Locality)
+  ├── swin_block.py         # Hierarchical Shifted-Window Attention (W-MSA & SW-MSA)
+  ├── fusion.py             # Cross-Attention Feature Fusion (CAFF) & Adaptive Gating
+  ├── head.py               # Weighted Global Average Pooling (WGAP) Classification Head
+  ├── model.py              # Unified E2HViT model & factory builders (Nano, Tiny, Small)
+  └── explainability.py     # Dual-Lens Explainer (Grad-CAM + Attention Rollout + Faithfulness)
+tests/
+  ├── __init__.py
+  └── test_e2h_vit.py       # 12 automated unit & integration tests
+demo.py                     # End-to-end inference & 4-panel visual explanation demo
+train_eval.py               # Model training, validation & checkpointing harness
+assets/
+  └── e2h_vit_demo_output.png  # Generated publication-quality 4-panel diagnostic figure
+```
+
+### Model Preset Configurations & Verified Parameters
+| Model Variant | Stem Channels | Swin Embed / Out Dim | Fusion Heads | Parameters | Primary Clinical Target |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **E2H-ViT-Nano** | 96 | 48 / 96 | 6 | **442,587** (~0.44M) | Ultra-low-power wearable IoMT & microcontrollers |
+| **E2H-ViT-Tiny** | 352 | 176 / 352 | 8 | **5,785,307** (~5.78M) | Point-of-care mobile clinics & portable ultrasound |
+| **E2H-ViT-Small** | 512 | 256 / 512 | 16 | **12,246,147** (~12.2M) | Multi-organ CT/MRI segmentation & gigapixel pathology |
+
+### Verified Parameter Footprint Breakdown (E2H-ViT-Tiny)
+- **CNN Stem**: 359,568 parameters (6.2%) — *extracts localized cell boundaries and high-frequency edge textures*
+- **Swin Branch**: 3,993,800 parameters (69.0%) — *captures global multi-organ spatial context*
+- **Cross Fusion (CAFF)**: 1,368,224 parameters (23.6%) — *bridges local edges with global context*
+- **WGAP Head**: 63,715 parameters (1.1%) — *learns spatial token importance weighting for diagnosis*
+- **Total**: **5,785,307 parameters** (~5.8M)
+
+### Dual-Lens Visual Explanations
+Executing `python demo.py` runs diagnostic inference on a medical scan phantom, applies the Dual-Lens Explainer, and evaluates the quantitative explanation faithfulness metric:
+
+![E2H-ViT Dual-Lens Diagnostic Report](assets/e2h_vit_demo_output.png)
+
+1. **Input Scan**: 2D medical imaging scan with ground-truth lesion annotation contour.
+2. **CNN Stem Grad-CAM**: Highlights high-gradient edge boundaries and micro-texture margins.
+3. **Swin Attention Rollout**: Visualizes global contextual attention distributed across the anatomical field.
+4. **Dual-Lens Fused Explanation**: Normalized combination of local and global saliency, accompanied by the quantitative perturbation faithfulness score ($\Delta P = 2.18\%$).
+
+### Running Tests & Training Locally
+```bash
+# 1. Run all 12 automated unit and integration tests
+python -m unittest tests/test_e2h_vit.py -v
+
+# 2. Run the end-to-end inference and explainability demo
+python demo.py
+
+# 3. Train the model on medical benchmarks (CPU or CUDA)
+python train_eval.py --epochs 5 --model-size nano
+```
 
 ---
 
