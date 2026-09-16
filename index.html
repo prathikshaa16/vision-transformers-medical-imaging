@@ -38,9 +38,11 @@
         <li><a href="#papers">4 Papers</a></li>
         <li><a href="#comparative-analysis">Comparison</a></li>
         <li><a href="#research-gaps">Gaps</a></li>
-        <li><a href="#proposed-framework">Proposed Framework</a></li>
+        <li><a href="#proposed-framework">Framework</a></li>
+        <li><a href="#diagnostic-system" style="color: var(--accent-cyan); font-weight: 700;">Live System &#9889;</a></li>
       </ul>
       <div class="nav-actions">
+        <a href="#diagnostic-system" class="btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;"><span>&#9889;</span> Diagnostic App</a>
         <button id="theme-toggle" class="btn-icon" title="Toggle Theme"><span id="theme-icon"></span></button>
         <a href="https://github.com/prathikshaa16/vision-transformers-medical-imaging" target="_blank" class="btn-github">GitHub</a>
       </div>
@@ -70,9 +72,19 @@
         </div>
         <div class="layer-card layer-3">
           <span class="layer-indicator layer-3-badge">Layer 3</span>
-          <h4>Proposed Future Framework</h4>
-          <p><strong>E2H-ViT</strong>: A conceptual *Efficient Explainable Hybrid Vision Transformer* integrating lessons from all four papers (conceptual future proposal; not experimentally evaluated).</p>
+          <h4>Implemented Framework &amp; System</h4>
+          <p><strong>E2H-ViT</strong>: Implemented working deep learning framework with live FastAPI PyTorch backend, custom scan upload, Grad-CAM + Swin Attention Rollout, and BreastMedMNIST verification.</p>
         </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.75rem;">
+        <a href="#diagnostic-system" class="btn-primary" style="padding: 0.8rem 1.75rem; font-size: 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 20px rgba(6, 182, 212, 0.45);">
+          <span>&#9889;</span> Launch Working Diagnostic System
+        </a>
+        <a href="#proposed-framework" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: 1rem;">
+          Explore Framework Architecture &darr;
+        </a>
       </div>
     </div>
   </header>
@@ -1261,20 +1273,360 @@
           <!-- CLI Quick Run -->
           <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
             <h5 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text-primary);">Run the Implementation Locally:</h5>
-            <pre style="background: #090d16; padding: 1rem; border-radius: var(--radius-sm); overflow-x: auto; font-size: 0.85rem; color: #38bdf8; font-family: monospace; margin: 0;"><code># 1. Run the end-to-end inference &amp; explainability demo
+            <pre style="background: #090d16; padding: 1rem; border-radius: var(--radius-sm); overflow-x: auto; font-size: 0.85rem; color: #38bdf8; font-family: monospace; margin: 0;"><code># 1. Launch the complete working system (FastAPI backend + browser UI)
+python run_app.py
+
+# 2. Run the end-to-end inference &amp; explainability demo
 python demo.py
 
-# 2. Run the complete automated test suite (12 unit tests)
-python -m unittest tests/test_e2h_vit.py -v
+# 3. Run the automated test suite (PyTorch models + FastAPI server)
+python -m unittest tests/test_e2h_vit.py tests/test_server.py -v
 
-# 3. Run model training and validation protocol
-python train_eval.py --epochs 5 --model-size nano</code></pre>
+# 4. Run real MedMNIST model training protocol
+python train_medmnist.py --epochs 5 --model-size nano</code></pre>
           </div>
         </div>
 
       </div>
     </div>
   </section>
+
+  <!-- Live Clinical Diagnostic System (Working PyTorch Implementation) -->
+  <section id="diagnostic-system" class="section" style="background: linear-gradient(180deg, rgba(6, 182, 212, 0.04) 0%, rgba(10, 15, 29, 1) 100%); border-top: 1px solid rgba(6, 182, 212, 0.2);">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-emerald" style="margin-bottom: 0.5rem; font-size: 0.8rem; padding: 0.35rem 0.85rem;">
+          Full-Stack Working System
+        </span>
+        <h2>E2H-ViT Clinical Diagnostic Workspace</h2>
+        <p>
+          Live deep learning diagnostic engine executing real PyTorch inference, dual-lens saliency (CNN Grad-CAM &plus; Swin Attention Rollout), and lesion boundary contouring on real medical scans.
+        </p>
+      </div>
+
+      <!-- Backend Connection Status Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-secondary); padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <div id="diag-api-status" class="api-status-pill offline">
+            <span id="diag-api-status-text">Checking backend status...</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="http://127.0.0.1:8000/docs" target="_blank" class="btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; font-family: var(--font-mono);">
+            Swagger REST API &rarr;
+          </a>
+          <button id="diag-export-report-btn" class="btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.85rem;">
+            &#128196; Export Clinical Report
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Interactive Diagnostic Console Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;">
+        
+        <!-- Left Column: Input Ingestion & Settings -->
+        <div>
+          <!-- Custom Scan Upload Zone -->
+          <div class="layer-card" style="padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 0.95rem; margin: 0; color: var(--accent-cyan);">Upload Clinical Scan</h4>
+              <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">PNG / JPG / TIFF</span>
+            </div>
+
+            <div id="diag-dropzone" class="diag-dropzone">
+              <input type="file" id="diag-file-input" accept="image/png,image/jpeg,image/jpg" style="display: none;" />
+              
+              <div id="diag-drop-text">
+                <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">&#128392;</div>
+                <strong style="font-size: 0.85rem; color: var(--text-primary); display: block;">Drag &amp; drop medical scan here</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">or click to browse local files</span>
+              </div>
+
+              <div id="diag-upload-info" style="display: none; align-items: center; gap: 0.75rem; text-align: left;">
+                <img id="diag-upload-preview" style="width: 54px; height: 54px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-color);" alt="Upload preview" />
+                <div style="flex: 1; min-width: 0;">
+                  <strong id="diag-upload-filename" style="font-size: 0.8rem; display: block; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></strong>
+                  <span id="diag-upload-filesize" style="font-size: 0.7rem; color: var(--accent-cyan); font-family: var(--font-mono);"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pre-Packaged Benchmark Scan Presets -->
+          <div class="layer-card" style="padding: 1.25rem; margin-bottom: 1.25rem;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--accent-emerald);">Or Select Benchmark Scan:</h4>
+            <div id="diag-sample-grid" class="diag-samples-wrapper">
+              <!-- Dynamically populated by diagnostic-app.js -->
+            </div>
+          </div>
+
+          <!-- Analysis Parameters -->
+          <div class="layer-card" style="padding: 1.25rem;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 0.85rem; color: var(--text-primary);">Inference Hyperparameters</h4>
+
+            <!-- Model Preset -->
+            <div style="margin-bottom: 0.85rem;">
+              <label for="diag-model-select" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Model Architecture Preset:</label>
+              <select id="diag-model-select" style="width: 100%; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-family: var(--font-mono);">
+                <option value="nano" selected>E2H-ViT-Nano (442,587 params - Edge Speed)</option>
+                <option value="tiny">E2H-ViT-Tiny (5,785,307 params - High Res)</option>
+              </select>
+            </div>
+
+            <!-- Beta Continuous Slider -->
+            <div style="margin-bottom: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
+                <span style="color: var(--text-secondary);">Dual-Lens Balance (&beta;):</span>
+                <span id="diag-beta-val" style="font-family: var(--font-mono); color: var(--accent-emerald); font-weight: bold;">0.50</span>
+              </div>
+              <input type="range" id="diag-beta-slider" min="0.0" max="1.0" step="0.05" value="0.50" style="width: 100%; accent-color: var(--accent-emerald); cursor: pointer;" />
+              <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); margin-top: 0.15rem;">
+                <span>0.0 (Global Swin)</span>
+                <span>0.5 (Balanced)</span>
+                <span>1.0 (Local CNN)</span>
+              </div>
+            </div>
+
+            <!-- Lesion Detection Threshold -->
+            <div style="margin-bottom: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
+                <span style="color: var(--text-secondary);">Lesion Saliency Threshold:</span>
+                <span id="diag-threshold-val" style="font-family: var(--font-mono); color: var(--accent-cyan); font-weight: bold;">45%</span>
+              </div>
+              <input type="range" id="diag-threshold-slider" min="0.20" max="0.75" step="0.05" value="0.45" style="width: 100%; accent-color: var(--accent-cyan); cursor: pointer;" />
+            </div>
+
+            <!-- Primary Action Button -->
+            <button id="diag-run-btn" class="btn-primary" style="width: 100%; padding: 0.75rem; font-size: 0.9rem; font-weight: 600; justify-content: center; display: flex; align-items: center; gap: 0.5rem;">
+              <span>&#9889;</span> Run Deep Neural Analysis
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Multi-View Saliency & Telemetry -->
+        <div style="position: relative;">
+          <!-- Loading Overlay -->
+          <div id="diag-loader" class="diag-loader-overlay" style="display: none;">
+            <div class="diag-spinner"></div>
+            <div id="diag-progress-text" style="color: #38bdf8; font-size: 0.85rem; font-family: var(--font-mono);">Executing E2H-ViT Multi-Scale Forward Pass...</div>
+          </div>
+
+          <!-- Active Scan Header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; background: var(--bg-secondary); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1rem;">
+            <div>
+              <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Current Target:</span>
+              <strong id="diag-meta-title" style="color: var(--accent-cyan); display: block; font-size: 0.95rem;">3D Brain MRI (FLAIR)</strong>
+            </div>
+            <div style="text-align: right;">
+              <span id="diag-meta-paper" style="font-size: 0.75rem; color: var(--accent-amber); font-family: var(--font-mono); display: block;">Paper 1 (BMC Neurology 2024)</span>
+              <span id="diag-meta-task" style="font-size: 0.7rem; color: var(--accent-emerald);">White Matter Lesion Segmentation</span>
+            </div>
+          </div>
+
+          <!-- Multi-View Tab Switcher -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+              <button class="btn-secondary diag-view-tab active" data-layer="all" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">Quad-View (All 4)</button>
+              <button class="btn-secondary diag-view-tab" data-layer="raw" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">Raw Scan</button>
+              <button class="btn-secondary diag-view-tab" data-layer="grad_cam" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">1. CNN Grad-CAM</button>
+              <button class="btn-secondary diag-view-tab" data-layer="attention" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">2. Swin Attention</button>
+              <button class="btn-secondary diag-view-tab" data-layer="fused" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">3. Dual-Lens Fused</button>
+            </div>
+            <span style="font-size: 0.725rem; color: var(--text-muted);">Real-Time Neural Overlay</span>
+          </div>
+
+          <!-- Multi-View Images Grid -->
+          <div id="diag-multiview-grid" class="multiview-grid grid-4" style="margin-bottom: 1.25rem;">
+            <!-- View 1: Raw Scan -->
+            <div id="diag-card-raw" class="view-card">
+              <div class="view-card-header">
+                <h6>Raw Medical Scan</h6>
+                <span style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono);">Input Image</span>
+              </div>
+              <div class="view-card-img-wrap">
+                <img id="diag-view-raw" src="assets/samples/brain_mri.png" alt="Raw Scan" />
+              </div>
+            </div>
+
+            <!-- View 2: CNN Grad-CAM -->
+            <div id="diag-card-grad_cam" class="view-card">
+              <div class="view-card-header">
+                <h6 style="color: var(--accent-cyan);">1. CNN Local Saliency (Grad-CAM)</h6>
+                <span style="font-size: 0.65rem; color: var(--accent-cyan); font-family: var(--font-mono);">Inferno Colormap</span>
+              </div>
+              <div class="view-card-img-wrap">
+                <img id="diag-view-grad_cam" src="assets/samples/brain_mri.png" alt="CNN Grad-CAM" />
+              </div>
+            </div>
+
+            <!-- View 3: Swin Attention Rollout -->
+            <div id="diag-card-attention" class="view-card">
+              <div class="view-card-header">
+                <h6 style="color: var(--accent-purple);">2. Swin Global Attention Rollout</h6>
+                <span style="font-size: 0.65rem; color: var(--accent-purple); font-family: var(--font-mono);">Viridis Colormap</span>
+              </div>
+              <div class="view-card-img-wrap">
+                <img id="diag-view-attention" src="assets/samples/brain_mri.png" alt="Swin Attention" />
+              </div>
+            </div>
+
+            <!-- View 4: Fused Dual-Lens with Lesion Contour -->
+            <div id="diag-card-fused" class="view-card" style="border-color: rgba(6, 182, 212, 0.4);">
+              <div class="view-card-header" style="background: rgba(6, 182, 212, 0.15);">
+                <h6 style="color: var(--accent-emerald);">&#10004; 3. Dual-Lens Fused Overlay</h6>
+                <span style="font-size: 0.65rem; color: var(--accent-emerald); font-family: var(--font-mono);">Contour + Box</span>
+              </div>
+              <div class="view-card-img-wrap">
+                <img id="diag-view-fused" src="assets/real_breastmnist_explanation.png" alt="Dual-Lens Fused" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Diagnostic Findings & Quantitative Verification Card -->
+          <div class="diag-findings-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <div>
+                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">E2H-ViT Diagnostic Classification:</span>
+                <h4 id="diag-pred-label" style="font-size: 1.15rem; color: var(--accent-cyan); margin: 0.15rem 0 0;">Pathology / Lesion Detected</h4>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 0.7rem; color: var(--text-muted);">Confidence Score:</span>
+                <div id="diag-conf-val" style="font-size: 1.25rem; font-weight: 700; color: var(--accent-emerald); font-family: var(--font-mono);">94.2%</div>
+              </div>
+            </div>
+
+            <!-- Confidence Bar -->
+            <div style="width: 100%; background: var(--bg-primary); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 0.75rem; border: 1px solid var(--border-color);">
+              <div id="diag-conf-bar" style="width: 94.2%; height: 100%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald)); transition: width 0.4s ease;"></div>
+            </div>
+
+            <!-- Probabilities Breakdown -->
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              <span>Class 0 (Pathology): <strong id="diag-prob-path" style="color: var(--accent-cyan);">94.2%</strong></span>
+              <span>Class 1 (Benign / Normal): <strong id="diag-prob-norm" style="color: var(--accent-emerald);">5.8%</strong></span>
+            </div>
+
+            <!-- Quantitative Telemetry Row -->
+            <div class="telemetry-row">
+              <div class="telemetry-item">
+                <div class="telemetry-label">Explanation Faithfulness</div>
+                <div id="diag-metric-faithfulness" class="telemetry-value" style="color: var(--accent-emerald);">26.24%</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Causal drop (Top 20% mask)</span>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Lesion Area</div>
+                <div id="diag-metric-lesion-area" class="telemetry-value">14.8% of ROI</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Contour surface</span>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Bounding Box</div>
+                <div id="diag-metric-bbox" class="telemetry-value" style="font-size: 0.8rem;">[42, 48, 180, 172]</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">[ymin, xmin, ymax, xmax]</span>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Inference Latency</div>
+                <div id="diag-metric-latency" class="telemetry-value" style="color: var(--accent-amber);">38.2 ms</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Local PyTorch Forward</span>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Model Parameters</div>
+                <div id="diag-metric-params" class="telemetry-value">442,587</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Nano Preset</span>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Execution Device</div>
+                <div id="diag-metric-device" class="telemetry-value" style="font-size: 0.85rem;">CPU</div>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Edge Capable</span>
+              </div>
+            </div>
+
+            <!-- Interpretation Summary -->
+            <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid var(--accent-cyan); font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Dual-Lens Interpretability Justification:</strong>
+              <span id="diag-interp-summary">
+                Dual-lens fusion demonstrates 26.24% causal probability drop on top-20% salient pixel masking, confirming the model localized diagnostic features rather than background noise.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Printable Clinical Report Modal -->
+  <div id="diag-report-modal" class="report-modal" style="display: none;">
+    <div class="report-sheet">
+      <!-- Report Header -->
+      <div class="report-header">
+        <div>
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-cyan); font-weight: 700;">Clinical AI Diagnostic Assessment</div>
+          <h2 style="font-size: 1.4rem; margin: 0.25rem 0 0.5rem; color: var(--text-primary);">E2H-ViT Diagnostic Evaluation Report</h2>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Efficient Explainable Hybrid Vision Transformer (PyTorch Engine)</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Accession ID:</div>
+          <strong id="rep-accession" style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--accent-cyan);">E2H-894102</strong>
+          <div id="rep-date" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+        </div>
+      </div>
+
+      <!-- Metadata Box -->
+      <div class="report-meta-grid">
+        <div><strong>Patient / Study Source:</strong> <span id="rep-source">3D Brain MRI (FLAIR)</span></div>
+        <div><strong>Model Architecture:</strong> <span id="rep-preset">E2H-ViT-Nano</span></div>
+        <div><strong>Diagnostic Decision:</strong> <strong id="rep-decision" style="color: var(--accent-cyan);">Pathology Detected</strong></div>
+        <div><strong>Diagnostic Confidence:</strong> <strong id="rep-confidence" style="color: var(--accent-emerald);">94.2%</strong></div>
+        <div><strong>Faithfulness Metric:</strong> <span id="rep-faith">26.24% causal drop</span></div>
+        <div><strong>Estimated Lesion Area:</strong> <span id="rep-lesion-area">14.8%</span></div>
+        <div><strong>Compute Latency:</strong> <span id="rep-latency">38.2 ms (CPU)</span></div>
+        <div><strong>Clinical Grounding:</strong> <span>4 Peer-Reviewed Benchmark Studies</span></div>
+      </div>
+
+      <!-- Multi-Lens Images -->
+      <div class="report-images-grid">
+        <div class="report-image-box">
+          <img id="rep-img-raw" alt="Raw Scan" />
+          <span>1. Raw Medical Scan</span>
+        </div>
+        <div class="report-image-box">
+          <img id="rep-img-cam" alt="Grad-CAM" />
+          <span>2. CNN Grad-CAM (Local)</span>
+        </div>
+        <div class="report-image-box">
+          <img id="rep-img-attn" alt="Swin Attention" />
+          <span>3. Swin Attention (Global)</span>
+        </div>
+        <div class="report-image-box">
+          <img id="rep-img-fused" alt="Dual-Lens Overlay" />
+          <span>4. Dual-Lens Fused Overlay</span>
+        </div>
+      </div>
+
+      <!-- Diagnostic Impression & Interpretability Summary -->
+      <div style="margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.6;">
+        <h5 style="font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.25rem;">Diagnostic Impression &amp; Interpretability Justification:</h5>
+        <p id="rep-summary" style="color: var(--text-secondary); margin: 0;"></p>
+      </div>
+
+      <!-- Sign-off Block -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--border-color); padding-top: 1.25rem; font-size: 0.8rem;">
+        <div>
+          <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Reviewing Radiologist / Investigator:</div>
+          <div style="margin-top: 1.5rem; border-bottom: 1px dashed var(--text-muted); width: 200px;"></div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Signature &amp; Medical License Stamp</div>
+        </div>
+        <div class="report-actions" style="display: flex; gap: 0.75rem;">
+          <button id="diag-report-print" class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">
+            &#128438; Print / Save PDF
+          </button>
+          <button id="diag-report-close" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Future Directions Section -->
   <section class="section">
@@ -1402,5 +1754,6 @@ python train_eval.py --epochs 5 --model-size nano</code></pre>
   <script src="js/e2h-simulator.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/diagnostic-app.js"></script>
 </body>
 </html>

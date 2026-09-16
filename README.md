@@ -381,20 +381,39 @@ Executing `python demo.py` runs diagnostic inference on a multi-parametric phant
 3. **Swin Attention Rollout**: Visualizes global contextual attention distributed across the anatomical field.
 4. **Dual-Lens Fused Explanation**: Normalized combination of local and global saliency, accompanied by the quantitative perturbation faithfulness score.
 
-### Running Tests & Training Locally
-```bash
-# 1. Run all 12 automated unit and integration tests
-python -m unittest tests/test_e2h_vit.py -v
+### Running the Full-Stack Working System
+The repository includes a complete, production-ready diagnostic working system combining a **PyTorch deep learning backend** (FastAPI) and an **interactive clinical diagnostic workspace** (web UI with scan upload, real-time overlays, and report export):
 
-# 2. Run the end-to-end inference and explainability demo
+```bash
+# 1. Launch the complete working system (One-Click Launcher)
+# Starts FastAPI server on http://127.0.0.1:8000 and opens the browser workspace automatically:
+python run_app.py
+
+# 2. Run the end-to-end inference and dual-lens visualizer demo
 python demo.py
 
-# 3. Train on real MedMNIST Breast Ultrasound scans
-python train_medmnist.py --epochs 3 --model-type nano
+# 3. Run the comprehensive test suite (16 tests: PyTorch architecture + FastAPI endpoints)
+python -m unittest tests/test_e2h_vit.py tests/test_server.py -v
 
-# 4. Train the model on synthetic medical cohorts
-python train_eval.py --epochs 5 --model-size nano
+# 4. Train the model on real MedMNIST Breast Ultrasound scans
+python train_medmnist.py --epochs 5 --model-type nano
 ```
+
+### FastAPI REST API Specification
+When `run_app.py` or `uvicorn server:app --port 8000` is running, the backend exposes REST API endpoints with interactive Swagger documentation at `http://127.0.0.1:8000/docs`:
+
+| Endpoint | Method | Input Parameters | Output & Purpose |
+| :--- | :--- | :--- | :--- |
+| `/api/health` | `GET` | None | Hardware device (CPU/CUDA), active models, parameter counts, and uptime. |
+| `/api/samples` | `GET` | None | Library of 4 benchmark scans (Brain MRI, Cardiac Cine, Breast US, Histopathology). |
+| `/api/analyze` | `POST` | `file` (UploadFile) or `sample_id` (str), `beta` (float), `threshold` (float), `model_preset` ("nano" / "tiny") | Executes forward inference, Grad-CAM, Swin Attention Rollout, lesion contouring, and returns base64 overlays, diagnostic prediction, and causal faithfulness metric. |
+
+### Clinical Diagnostic Workspace Features
+1. **Custom Scan Ingestion**: Drag & drop custom clinical scans (PNG, JPG) or select from 4 pre-packaged benchmark samples.
+2. **Quad-View Multi-Lens Saliency**: Side-by-side inspection of Raw Scan, CNN Grad-CAM (local margins), Swin Attention Rollout (global organ context), and Dual-Lens Fused Overlay with detected lesion contours.
+3. **Continuous $\beta$-Fusion Slider**: Dynamically re-balance between localized edge detection ($\beta \to 1.0$) and global contextual topology ($\beta \to 0.0$) in real time.
+4. **Quantitative Explanation Faithfulness**: Evaluated using pixel-perturbation testing (top-20% salient pixel masking), measuring causal prediction drops (26.24% on real MedMNIST).
+5. **Printable Clinical Report Export**: One-click generation of a clean, standardized clinical assessment report sheet with accession ID, multi-lens images, quantitative findings, and signature block for printing or PDF export.
 
 ---
 
@@ -435,13 +454,16 @@ python train_eval.py --epochs 5 --model-size nano
 
 ## Local Quick Start
 
-To launch the interactive research web portal locally:
+To launch the interactive research web portal and working diagnostic system locally:
 ```bash
 # Clone the repository
 git clone https://github.com/prathikshaa16/vision-transformers-medical-imaging.git
 cd vision-transformers-medical-imaging
 
-# Open index.html directly or serve with Python:
+# Option A: One-Click System Launcher (Recommended - launches FastAPI backend + web UI)
+python run_app.py
+
+# Option B: Static Preview (Frontend only)
 python -m http.server 8000
 # Then visit http://localhost:8000 in your browser
 ```
